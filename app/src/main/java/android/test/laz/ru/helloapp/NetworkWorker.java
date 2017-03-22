@@ -87,7 +87,7 @@ public class NetworkWorker {
         StringRequest sReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println("RESPONSE TRANSLATE " + response);
+                System.out.println("RESPONSE TRANSLATE: " + response);
 
                 JSONObject resJsonObj = null;
                 String resultText = "";
