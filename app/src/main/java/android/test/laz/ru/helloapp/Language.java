@@ -31,9 +31,7 @@ public class Language {
             }
         } else {
             for (String[] stArr : arrSrgs) {
-                if(stArr[0].equals(MainActivity.fromLang)) {
                     ret.add(stArr[1]);
-                }
             }
         }
 

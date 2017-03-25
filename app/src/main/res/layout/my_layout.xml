@@ -13,27 +13,21 @@
 
         <Spinner
             android:id="@+id/fromSpinner"
-            android:layout_width="186dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="189dp"
+            android:layout_height="match_parent" />
 
         <Spinner
             android:id="@+id/toSpinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="50dp" />
     </LinearLayout>
 
     <EditText
         android:id="@+id/fromText"
         android:layout_width="match_parent"
-        android:layout_height="175dp"
+        android:layout_height="202dp"
         android:ems="10"
-        android:text="@string/json" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/button" />
+        android:text="@string/enterText" />
 
     <EditText
     android:id="@+id/toText"

@@ -1,8 +1,14 @@
 package android.test.laz.ru.helloapp;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-//sava
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,9 +41,11 @@ public class MainActivity extends AppCompatActivity {
     public HashSet<String> langPairsSet;
     private RequestQueue reqQueue;
 
-
-
-
+    @Override
+    protected void onStart() {
+    super.onStart();
+        NetworkWorker.getInstance(this).getLangs(URL,GETLANGS_URL, KEY);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,34 +53,52 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.my_layout);
 
         ArrayList<String[]> langPairs = new ArrayList<String[]>();
-        NetworkWorker.getInstance(this).getLangs(URL,GETLANGS_URL, KEY);
         fromSpinner = (Spinner) findViewById(R.id.fromSpinner);
         toSpinner = (Spinner) findViewById(R.id.toSpinner);
-        //setSpinners(true);
-        //setSpinners(false);
         langDisplayNames = new HashMap<String,String>();
         langPairsSet = new HashSet<String>();
-        //new FillLangsTask().execute(URL,"/getLangs", KEY);
         fromText = (TextView) findViewById(R.id.fromText);
-        toText = (TextView) findViewById(R.id.toText);
-        btn = (Button) findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener() {
+        fromText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inStr = fromText.getText().toString();
-                System.out.println("PRESSED");
-                NetworkWorker.getInstance(MainActivity.this).translate(URL,TRANLSATE_URL, KEY,  inStr, fromLang, toLang);
+
+                if(fromText.getText().equals(getResources().getString(R.string.enterText)));
+                //fromText.setText("");
             }
         });
 
 
+        fromText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                System.out.println("Text chenged");
+                String inStr = fromText.getText().toString();
+                NetworkWorker.getInstance(MainActivity.this).translate(URL,TRANLSATE_URL, KEY,  inStr, fromLang, toLang);
+            }
+        });
+
+        toText = (TextView) findViewById(R.id.toText);
     }
 
 
     public void setSpinners(boolean isFrom) {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Language.fillFromSpinnerList(isFrom));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Language.fillFromSpinnerList(isFrom));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+
+
 
         if(isFrom) {
             fromSpinner.setAdapter(adapter);
@@ -83,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
                     fromLang = fromSpinner.getSelectedItem().toString();
                     System.out.println("Spin from " + fromLang);
                     Log.i("LANG:from ", "");
-                    setSpinners(false);
                 }
 
                 @Override
@@ -109,7 +133,51 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+
+        fromSpinner.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    setSpinners(true);
+                }
+                return false;
+            }
+        });
+
+
+
+        toSpinner.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    setSpinners(false);
+                }
+                return false;
+            }
+        });
+
     }
+
+
+    public class NetworkChangeReceiver extends BroadcastReceiver {
+        Context mContext;
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mContext = context;
+            String status = NetworkUtil.getConnectivityStatusString(context);
+
+            Log.e("Receiver ", "" + status);
+
+            if (status.equals("Not connected to Internet")) {
+                Log.e("Receiver ", "not connction");// your code when internet lost
+
+
+            } else {
+                Log.e("Receiver ", "connected to internet");//your code when internet connection come back
+            }
+
+        }
 
 
 }
