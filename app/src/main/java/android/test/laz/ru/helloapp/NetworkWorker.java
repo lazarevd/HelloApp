@@ -105,7 +105,7 @@ public class NetworkWorker {
 
     public void translate(String... params) {
         //String url = params[0]+params[1]+params[2]+"&text="+params[3]+"&lang=en-ru";
-        String url = params[0]+params[1]+params[2]+"&text="+params[3]+"&lang=en-ru";
+        String url = params[0]+params[1]+params[2]+"&text="+params[3]+"&lang=" + params[4] + "-" + params[5];
         Log.i("URL ", url);
         StringRequest sReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

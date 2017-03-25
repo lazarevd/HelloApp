@@ -1,6 +1,7 @@
 package android.test.laz.ru.helloapp;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 /**
  * Created by z on 25.03.2017.
@@ -21,7 +22,7 @@ public class Language {
 
     public static ArrayList<String> fillFromSpinnerList(boolean isFrom) {
         ArrayList<String[]> arrSrgs = getLangArray();
-        ArrayList<String> ret = new ArrayList<String>();
+        LinkedHashSet<String> ret = new LinkedHashSet<String>();
         if (isFrom) {
             for (String[] stArr : arrSrgs) {//Заполняем переводимый язык?
                 ret.add(stArr[0]);
@@ -31,8 +32,7 @@ public class Language {
                 ret.add(stArr[1]);
             }
         }
-
-        return ret;
+        return new ArrayList<String>(ret);
     }
 
 }
