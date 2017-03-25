@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     public static TextView fromText;
     public static TextView toText;
     public Button btn;
+    public Spinner fromSpinner;
+    public Spinner toSpinner;
     public static final String URL = "https://translate.yandex.net/api/v1.5/tr.json";
     public static final String KEY = "?key=trnsl.1.1.20170315T111852Z.8e1ce17582bf567d.c36b8c3cf325da51fd6fa504d099559c62fa9102";
     public static final String TRANLSATE_URL = "/translate";
@@ -45,8 +47,10 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<String[]> langPairs = new ArrayList<String[]>();
         NetworkWorker.getInstance(this).getLangs(URL,GETLANGS_URL, KEY);
-
-
+        fromSpinner = (Spinner) findViewById(R.id.fromSpinner);
+        toSpinner = (Spinner) findViewById(R.id.toSpinner);
+        //setSpinners(true);
+        //setSpinners(false);
         langDisplayNames = new HashMap<String,String>();
         langPairsSet = new HashSet<String>();
         //new FillLangsTask().execute(URL,"/getLangs", KEY);
@@ -66,18 +70,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void setSpinner(int spinId, boolean isFrom) {
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Language.fillFromSpinnerList(isFrom));
+    public void setSpinners(boolean isFrom) {
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Language.fillFromSpinnerList(isFrom));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner spinner = (Spinner) findViewById(spinId);
-        spinner.setAdapter(adapter);
 
         if(isFrom) {
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            fromSpinner.setAdapter(adapter);
+            fromSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Log.i("SELECTED ", position + " " + adapter.getItem(position));
-                    fromLang=adapter.getItem(position);
+                    fromLang = fromSpinner.getSelectedItem().toString();
+                    System.out.println("Spin from " + fromLang);
+                    Log.i("LANG:from ", "");
+                    setSpinners(false);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        } else {
+            toSpinner.setAdapter(adapter);
+            toSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    toLang = toSpinner.getSelectedItem().toString();
+                    System.out.println("Spin to " + fromLang);
+                    Log.i("LANG:from ", "");
                 }
 
                 @Override
@@ -86,19 +107,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-        } else  {
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Log.i("SELECTED ", position + " " + adapter.getItem(position));
-                    toLang=adapter.getItem(position);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
         }
 
     }

@@ -1,5 +1,7 @@
 package android.test.laz.ru.helloapp;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
@@ -29,8 +31,14 @@ public class Language {
             }
         } else {
             for (String[] stArr : arrSrgs) {
-                ret.add(stArr[1]);
+                if(stArr[0].equals(MainActivity.fromLang)) {
+                    ret.add(stArr[1]);
+                }
             }
+        }
+
+        for(String st : ret) {
+            Log.i("FILL LIST ", isFrom + " " + st);
         }
         return new ArrayList<String>(ret);
     }

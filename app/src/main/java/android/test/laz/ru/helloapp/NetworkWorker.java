@@ -87,8 +87,8 @@ public class NetworkWorker {
                 Language.setLangArray(arrList);
 
                 MainActivity ma = (MainActivity) context;
-                ma.setSpinner(R.id.fromSpinner, true);
-                ma.setSpinner(R.id.toSpinner, false);
+                ma.setSpinners(true);
+                ma.setSpinners(false);
 
 
             }
