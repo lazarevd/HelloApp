@@ -1,6 +1,7 @@
 package android.test.laz.ru.helloapp;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Cache;
 import com.android.volley.Request;
@@ -10,11 +11,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 
 
 /**
@@ -70,6 +73,24 @@ public class NetworkWorker {
             @Override
             public void onResponse(String response) {
                 System.out.println("RESP " + response);
+                JSONObject resJsonObj = null;
+                ArrayList<String[]> arrList = new ArrayList<>();
+                try {
+                    resJsonObj = new JSONObject(response);
+                    JSONArray resJsonArr = resJsonObj.getJSONArray("dirs");
+                    for (int i=0;i<resJsonArr.length();i++) {
+                        arrList.add(resJsonArr.getString(i).split("-"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Language.setLangArray(arrList);
+
+                MainActivity ma = (MainActivity) context;
+                ma.setSpinner(R.id.fromSpinner, true);
+                ma.setSpinner(R.id.toSpinner, false);
+
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -81,9 +102,11 @@ public class NetworkWorker {
     }
 
 
+
     public void translate(String... params) {
+        //String url = params[0]+params[1]+params[2]+"&text="+params[3]+"&lang=en-ru";
         String url = params[0]+params[1]+params[2]+"&text="+params[3]+"&lang=en-ru";
-        System.out.println("TRANSLATE");
+        Log.i("URL ", url);
         StringRequest sReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -94,18 +117,27 @@ public class NetworkWorker {
 
                 try {
                     resJsonObj = new JSONObject(response);
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 if (resJsonObj!=null) {
                     try {
-                        resultText = resJsonObj.getString("text");
-                        resultText = resultText.substring(2,resultText.length()-2);
+                        JSONArray resJsonArr = resJsonObj.getJSONArray("text");
+                        for (int i=0;i<resJsonArr.length();i++) {
+                            resultText = resultText + " " + resJsonArr.getString(i);
+                        }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    Log.i("LOGG:", resultText);
+
                 }
+
+
 
                 MainActivity.toText.setText(resultText);
             }
@@ -118,4 +150,7 @@ public class NetworkWorker {
         rQueue.add(sReq);
 
     }
+
+
+
 }

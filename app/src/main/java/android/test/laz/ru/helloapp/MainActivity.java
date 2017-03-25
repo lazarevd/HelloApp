@@ -22,11 +22,15 @@ public class MainActivity extends AppCompatActivity {
     public static TextView fromText;
     public static TextView toText;
     public Button btn;
-    private final String URL = "https://translate.yandex.net/api/v1.5/tr.json";
-    private final String KEY = "?key=trnsl.1.1.20170315T111852Z.8e1ce17582bf567d.c36b8c3cf325da51fd6fa504d099559c62fa9102";
+    public static final String URL = "https://translate.yandex.net/api/v1.5/tr.json";
+    public static final String KEY = "?key=trnsl.1.1.20170315T111852Z.8e1ce17582bf567d.c36b8c3cf325da51fd6fa504d099559c62fa9102";
+    public static final String TRANLSATE_URL = "/translate";
+    public static final String GETLANGS_URL = "/getLangs";
     private HashMap<String,String> langDisplayNames;
     public HashSet<String> langPairsSet;
     private RequestQueue reqQueue;
+
+
 
 
 
@@ -35,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_layout);
 
-        NetworkWorker.getInstance(this.getApplicationContext()).getLangs(URL,"/getLangs", KEY);
+        ArrayList<String[]> langPairs = new ArrayList<String[]>();
+        NetworkWorker.getInstance(this).getLangs(URL,GETLANGS_URL, KEY);
 
 
         langDisplayNames = new HashMap<String,String>();
@@ -49,32 +54,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String inStr = fromText.getText().toString();
                 System.out.println("PRESSED");
-                NetworkWorker.getInstance(MainActivity.this).translate(URL,"/translate", KEY,  inStr);
+                NetworkWorker.getInstance(MainActivity.this).translate(URL,TRANLSATE_URL, KEY,  inStr);
             }
         });
 
-        ArrayList<String> fromSpinnerList = new ArrayList<String>();
-        fromSpinnerList.add("Rus");
-        fromSpinnerList.add("Engl");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, fromSpinnerList);
+    }
 
+
+    public void setSpinner(int spinId, boolean isFrom) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Language.fillFromSpinnerList(isFrom));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner sItems = (Spinner) findViewById(R.id.fromSpinner);
-        sItems.setAdapter(adapter);
-
+        Spinner spinner = (Spinner) findViewById(spinId);
+        spinner.setAdapter(adapter);
     }
 
-
-    private HashMap<String,String> fillDisplayRusNames() {
-        HashMap<String,String> ret = new HashMap<String,String>();
-        ret.put("ru", "Русский");
-        ret.put("en", "Английский");
-        ret.put("fr", "Французский");
-        ret.put("de", "Немецкий");
-
-        return ret;
-    }
 
 }
