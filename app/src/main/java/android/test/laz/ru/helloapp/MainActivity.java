@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_layout);
         prefs = Prefs.getInstance(this);
-        prefs.makePrefsfromJson(this);
+        //prefs.makePrefsfromJson(this);
         ArrayList<String[]> langPairs = new ArrayList<String[]>();
         fromSpinner = (Spinner) findViewById(R.id.fromSpinner);
         toSpinner = (Spinner) findViewById(R.id.toSpinner);
@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
                 String inStr = fromText.getText().toString();
                 NetworkWorker.getInstance(MainActivity.this).translate(URL,TRANLSATE_URL, KEY,  inStr, fromLang, toLang);
                 //prefs.makeJSONfromPrefs();
-                prefs.makePrefsfromJson(getApplicationContext());
             }
         });
 

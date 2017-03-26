@@ -2,6 +2,7 @@ package android.test.laz.ru.helloapp;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -25,7 +26,7 @@ public class Prefs {
     private final String SAVE_FILE_NAME = "prefsJSON.json";
     private ArrayList<SpinnerItem> fromSpinnerItems = new ArrayList<>();
     private ArrayList<SpinnerItem> toSpinnerItems = new ArrayList<>();
-    private Context context;
+    private transient Context context;//Обязательно transient, а то падает gson
 
 
     private Prefs() {
@@ -37,13 +38,14 @@ public class Prefs {
     public static synchronized Prefs getInstance(Context conxt) {
         if(instance == null) {
             instance = new Prefs();
+            instance.context = conxt;
+            instance.makePrefsfromJson(instance.context);
         }
-        instance.context = conxt;
-        instance.makePrefsfromJson(instance.context);
+
         return  instance;
     }
 
-    public void makeJSONfromPrefs(Context context) {
+    public synchronized void makeJSONfromPrefs(Context context) {
         Gson gson = new Gson();
         String filename = SAVE_FILE_NAME;
         String string = gson.toJson(instance).toString();
@@ -55,6 +57,26 @@ public class Prefs {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public synchronized void makePrefsfromJson(Context context) {
+        Gson gson = new Gson();
+        String jsonRes  = "";
+        try {
+            FileInputStream inStream = context.openFileInput(SAVE_FILE_NAME);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
+            String jsonStr;
+            while ((jsonStr = reader.readLine()) != null) {
+                jsonRes = jsonRes + jsonStr;
+            }
+
+            instance = gson.fromJson(jsonRes, Prefs.class);
+            Log.i("PREFS_from JSON ", jsonRes);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -123,24 +145,6 @@ public class Prefs {
         instance.langPairsList = arrList;
     }
 
-    public synchronized void makePrefsfromJson(Context context) {
-        Gson gson = new Gson();
-        String jsonRes  = "";
-        try {
-            FileInputStream inStream = context.openFileInput(SAVE_FILE_NAME);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
-            String jsonStr;
-            while ((jsonStr = reader.readLine()) != null) {
-                jsonRes = jsonRes + jsonStr;
-            }
 
-            instance = gson.fromJson(jsonRes, Prefs.class);
-            System.out.println("RES JSON" + jsonRes);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
 }

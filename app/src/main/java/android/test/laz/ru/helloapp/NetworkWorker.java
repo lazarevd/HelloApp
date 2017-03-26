@@ -87,6 +87,7 @@ public class NetworkWorker {
                 Prefs.getInstance(context).setLangPairsList(arrList);
                 Prefs.getInstance(context).generateSpinnerArray(context, true);
                 Prefs.getInstance(context).makeJSONfromPrefs(context);
+                //TODO Вешает все
                 MainActivity ma = (MainActivity) context;
                 ma.setSpinners(true);
                 ma.setSpinners(false);
