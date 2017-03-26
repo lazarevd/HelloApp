@@ -84,7 +84,9 @@ public class NetworkWorker {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Language.setLangArray(arrList);
+                Prefs.getInstance().setLangPairsList(arrList);
+                Prefs.getInstance().generateSpinnerArray(context, true);
+                Prefs.getInstance().makeJSONfromPrefs(context);
 
                 MainActivity ma = (MainActivity) context;
                 ma.setSpinners(true);

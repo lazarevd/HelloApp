@@ -1,12 +1,18 @@
 <resources>
+
+    <string-array name="langs">
+    <item></item>
+
+    </string-array>
+
+
     <string name="app_name" translatable="false">Я.Перевод</string>
     <string name="action_settings" translatable="false">Settings</string>
-    <string name="button">перевести</string>
     <string name="enterText">Введите текст</string>
     <string name="json" translatable="false">owl</string>
-    <string name="lang_ru">Russian</string>
-    <string name="lang_en">English</string>
-    <string name="lang_fr">French</string>
-    <string name="lang_de">German</string>
-    <string name="lang_hi">Hindi</string>
+    <string name="ru">Russian</string>
+    <string name="en">English</string>
+    <string name="fr">French</string>
+    <string name="de">German</string>
+    <string name="hi">Hindi</string>
 </resources>
