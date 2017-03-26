@@ -41,11 +41,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_layout);
-        prefs = Prefs.getInstance();
+        prefs = Prefs.getInstance(this);
         prefs.makePrefsfromJson(this);
         ArrayList<String[]> langPairs = new ArrayList<String[]>();
         fromSpinner = (Spinner) findViewById(R.id.fromSpinner);
         toSpinner = (Spinner) findViewById(R.id.toSpinner);
+        setSpinners(true);
+        setSpinners(false);
         fromText = (TextView) findViewById(R.id.fromText);
         NetworkWorker.getInstance(this).getLangs(URL,GETLANGS_URL, KEY);
         fromText.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setSpinners(boolean isFrom) {
 
-        ArrayList<SpinnerItem> siArr = Prefs.getInstance().getFromSpinnerItems();
+        ArrayList<SpinnerItem> siArr = Prefs.getInstance(this).getFromSpinnerItems();
 
 
 

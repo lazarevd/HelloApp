@@ -25,6 +25,7 @@ public class Prefs {
     private final String SAVE_FILE_NAME = "prefsJSON.json";
     private ArrayList<SpinnerItem> fromSpinnerItems = new ArrayList<>();
     private ArrayList<SpinnerItem> toSpinnerItems = new ArrayList<>();
+    private Context context;
 
 
     private Prefs() {
@@ -33,10 +34,12 @@ public class Prefs {
 
 
 
-    public static synchronized Prefs getInstance() {
+    public static synchronized Prefs getInstance(Context conxt) {
         if(instance == null) {
             instance = new Prefs();
         }
+        instance.context = conxt;
+        instance.makePrefsfromJson(instance.context);
         return  instance;
     }
 

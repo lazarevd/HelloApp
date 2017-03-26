@@ -4,4 +4,9 @@
     <string name="button">перевести</string>
     <string name="json" translatable="false">owl</string>
     <string name="fgdf" translatable="false">fd</string>
+    <string name="ru">Русский</string>
+    <string name="en">Английский</string>
+    <string name="fr">French</string>
+    <string name="de">German</string>
+    <string name="hi">Hindi</string>
 </resources>
