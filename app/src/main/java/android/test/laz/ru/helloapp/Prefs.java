@@ -79,6 +79,28 @@ public class Prefs {
 
     }
 
+    public void rearrangeSpinnerArray(String inpLang, boolean isFrom) {
+        if(isFrom) {
+            int tmpSiIndx = 0;
+            for(int i=0;i < fromSpinnerItems.size();i++) {
+                if (fromSpinnerItems.get(i).getLangShortName().equals(inpLang)) {
+                    tmpSiIndx=i;
+                }
+            }
+            SpinnerItem tmpSi = fromSpinnerItems.get(tmpSiIndx);
+
+            synchronized (this) {
+                fromSpinnerItems.remove(tmpSiIndx);
+                fromSpinnerItems.add(0,tmpSi);
+            }
+
+            for(SpinnerItem it : fromSpinnerItems) {
+                Log.i("rearr ", it.getDisplayName());
+            }
+        }
+    }
+
+
 
     public void generateSpinnerArray(Context context, boolean isFrom) {
         ArrayList<SpinnerItem> siList = new ArrayList<SpinnerItem>();

@@ -87,9 +87,6 @@ public class MainActivity extends AppCompatActivity {
     public void setSpinners(boolean isFrom) {
 
         ArrayList<SpinnerItem> siArr = Prefs.getInstance(this).getFromSpinnerItems();
-
-
-
         ArrayAdapter<SpinnerItem> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, siArr);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         if(isFrom) {
@@ -99,13 +96,19 @@ public class MainActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     SpinnerItem si = (SpinnerItem) fromSpinner.getSelectedItem();
                     fromLang = si.getLangShortName();
-                    System.out.println("Spin from " + si.getDisplayName() + " " + si.getLangShortName());
+
+
+                    Log.i("onItemSelected from ", si.getDisplayName() + " " + si.getLangShortName() + " pos: " + position);
                     Log.i("LANG:from ", "");
                 }
 
+
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
+                    Log.i("onNothingSelected from ", "");
 
+
+                    Log.i("LANG:from ", "");
                 }
             });
         } else {
@@ -132,7 +135,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    setSpinners(true);
+                    Prefs.getInstance(MainActivity.this).rearrangeSpinnerArray(fromLang, true);
+                    ArrayList<SpinnerItem> siArr = Prefs.getInstance(MainActivity.this).getFromSpinnerItems();
+                    ArrayAdapter<SpinnerItem> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item, siArr);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    fromSpinner.setAdapter(adapter);
                 }
                 return false;
             }
@@ -144,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    setSpinners(false);
+                   // setSpinners(false);
                 }
                 return false;
             }
