@@ -42,7 +42,12 @@ public class MainActivity extends AppCompatActivity {
         prefs.makePrefsfromJson(this);
         langsPannel = new LangsPannel(this);
         fromText = (TextView) findViewById(R.id.fromText);
-        NetworkWorker.getInstance(this).getLangs(URL,GETLANGS_URL, KEY);
+        if(Prefs.getInstance().getLangPairsList().size() <1) {
+            NetworkWorker.getInstance(this).getLangs(URL, GETLANGS_URL, KEY);
+        } else {
+            langsPannel.redrawSpinner(LangsPannel.SpinSelect.FROM);
+            langsPannel.redrawSpinner(LangsPannel.SpinSelect.TO);
+        }
         fromText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

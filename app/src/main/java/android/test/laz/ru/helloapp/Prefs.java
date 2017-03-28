@@ -47,14 +47,23 @@ public class Prefs {
     public synchronized void makeJSONfromPrefs(Context context) {
         Gson gson = new Gson();
         String filename = SAVE_FILE_NAME;
-        String string = gson.toJson(instance).toString();
+        String jsonString = gson.toJson(instance).toString();
+        Log.i("Save to JSON ", jsonString);
         FileOutputStream outputStream;
         try {
             outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
-            outputStream.write(string.getBytes());
+            outputStream.write(jsonString.getBytes());
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        for(SpinnerItem it : fromSpinnerItems) {
+            Log.i("Save" + "fromSpinnerItems", it.getDisplayName());
+        }
+
+        for(SpinnerItem it : toSpinnerItems) {
+            Log.i("Save" + "toSpinnerItems" , it.getDisplayName());
         }
     }
 
@@ -103,9 +112,9 @@ public class Prefs {
             toSpinnerItems = tmpSpinItems;
         }
 
-            for(SpinnerItem it : fromSpinnerItems) {
-                Log.i("Rearrange" + spinSel.toString() , it.getDisplayName());
-            }
+        for(int i=0;i<fromSpinnerItems.size() && i<toSpinnerItems.size();i++) {
+                Log.i("Rear", fromSpinnerItems.get(i).getDisplayName() + " " + toSpinnerItems.get(i).getDisplayName());
+        }
     }
 
 

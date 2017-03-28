@@ -64,9 +64,7 @@ public class NetworkWorker {
     }
 
 
-    public void getLangs(String... params)
-
-    {
+    public void getLangs(String... params) {
         // получаем данные с внешнего ресурса
         String url = params[0] + params[1] + params[2];
         StringRequest sReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -91,13 +89,10 @@ public class NetworkWorker {
                 MainActivity ma = (MainActivity) context;
                 ma.langsPannel.redrawSpinner(LangsPannel.SpinSelect.FROM);
                 ma.langsPannel.redrawSpinner(LangsPannel.SpinSelect.TO);
-
-
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
             }
         });
         rQueue.add(sReq);
@@ -132,16 +127,11 @@ public class NetworkWorker {
                         for (int i=0;i<resJsonArr.length();i++) {
                             resultText = resultText + " " + resJsonArr.getString(i);
                         }
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     Log.i("LOGG:", resultText);
-
                 }
-
-
-
                 MainActivity.toText.setText(resultText);
             }
         }, new Response.ErrorListener() {
