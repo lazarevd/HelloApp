@@ -26,7 +26,7 @@ public class LangsPannel {
     public enum SpinSelect {FROM,TO};
 
 
-    public LangsPannel(Context context) {
+    public LangsPannel(final Context context) {
         this.context = context;
         fromSpinner = (Spinner) ((Activity) context).findViewById(R.id.fromSpinner);
         toSpinner = (Spinner) ((Activity) context).findViewById(R.id.toSpinner);
@@ -37,6 +37,7 @@ public class LangsPannel {
                 SpinnerItem si = (SpinnerItem) fromSpinner.getSelectedItem();
                 Prefs.getInstance().fromLang = si.getLangShortName();
                 Prefs.getInstance().rearrangeSpinnerArray(Prefs.getInstance().fromLang, SpinSelect.FROM); //перераспределяем элементы в спиннере, двигаем вверх выбранный
+                NetworkWorker.getInstance(context).translateString();
                 Log.i("onItemSelected fromSpi ", si.getDisplayName() + " " + si.getLangShortName() + " pos: " + position);
             }
 
@@ -51,6 +52,7 @@ public class LangsPannel {
                 SpinnerItem si = (SpinnerItem) toSpinner.getSelectedItem();
                 Prefs.getInstance().toLang = si.getLangShortName();
                 Prefs.getInstance().rearrangeSpinnerArray(Prefs.getInstance().toLang, SpinSelect.TO);
+                NetworkWorker.getInstance(context).translateString();
                 Log.i("onItemSelected toSpi", si.getDisplayName() + " " + si.getLangShortName() + " pos: " + position);
             }
             @Override

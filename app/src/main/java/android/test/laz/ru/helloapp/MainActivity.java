@@ -4,18 +4,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.android.volley.RequestQueue;
 
-import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,8 +17,6 @@ public class MainActivity extends AppCompatActivity {
     public static TextView fromText;
     public static TextView toText;
     public LangsPannel langsPannel;
-    public Button btn;
-    private RequestQueue reqQueue;
     private Prefs prefs;
 
 
@@ -68,8 +59,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 System.out.println("Text changed");
-                String inStr = fromText.getText().toString();
-                NetworkWorker.getInstance(MainActivity.this).translate(Prefs.getInstance().URL,Prefs.getInstance().TRANLSATE_URL, Prefs.getInstance().KEY,  inStr, Prefs.getInstance().fromLang, Prefs.getInstance().toLang);
+                NetworkWorker.getInstance(MainActivity.this).translateString();
                 //prefs.makeJSONfromPrefs();
             }
         });
