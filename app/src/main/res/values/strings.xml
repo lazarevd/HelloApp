@@ -10,8 +10,42 @@
     <string name="action_settings" translatable="false">Settings</string>
     <string name="enterText">Введите текст</string>
     <string name="json" translatable="false">owl</string>
-    <string name="ru">Russian</string>
+
+    <string name="az">Azeri</string>
+    <string name="sq">Albanian</string>
+    <string name="am">Amharic</string>
     <string name="en">English</string>
+
+    <string name="ar">Arabian</string>
+    <string name="hy">Armenian</string>
+    <string name="af">Af</string>
+    <string name="eu">Basque</string>
+    <string name="ba">Bashkir</string>
+    <string name="be">Belarusian</string>
+    <string name="bp">Bengali</string>
+    <string name="bg">Bulgarian</string>
+    <string name="bs">Bosnian</string>
+    <string name="cy">Welsh</string>
+    <string name="hu">Hungarian</string>
+    <string name="vi">Vietnamese</string>
+    <string name="ht">Haitian(Creole)</string>
+    <string name="gl">Galician</string>
+    <string name="nl">Dutch</string>
+    <string name="mrj">Mountain</string>
+    <string name="el">Greek</string>
+    <string name="ka">Georgian</string>
+    <string name="gu">Gujarati</string>
+    <string name="da">Da</string>
+    <string name="he">Hebrew</string>
+    <string name="yi">Yiddish</string>
+    <string name="id">Indonesian</string>
+    <string name="ga">Irish</string>
+    <string name="it">Italian</string>
+    <string name="is">Icelandic</string>
+    <string name="es">Spanish</string>
+
+
+
     <string name="fr">French</string>
     <string name="de">German</string>
     <string name="hi">Hindi</string>
