@@ -26,8 +26,8 @@ public class Prefs {
     private final String SAVE_FILE_NAME = "prefsJSON.json";
     private ArrayList<SpinnerItem> fromSpinnerItems = new ArrayList<>();
     private ArrayList<SpinnerItem> toSpinnerItems = new ArrayList<>();
-    private transient Context context;//Обязательно transient, а то падает gson
-
+    public static String fromLang = "en";
+    public static String toLang = "ru";
 
     private Prefs() {
     }
@@ -35,15 +35,14 @@ public class Prefs {
 
 
 
-    public static synchronized Prefs getInstance(Context conxt) {
+    public static synchronized Prefs getInstance() {
         if(instance == null) {
             instance = new Prefs();
-            instance.context = conxt;
-            instance.makePrefsfromJson(instance.context);
         }
 
         return  instance;
     }
+
 
     public synchronized void makeJSONfromPrefs(Context context) {
         Gson gson = new Gson();
@@ -79,33 +78,42 @@ public class Prefs {
 
     }
 
-    public void rearrangeSpinnerArray(String inpLang, boolean isFrom) {
-        if(isFrom) {
+    public void rearrangeSpinnerArray(String inpLang, LangsPannel.SpinSelect spinSel) {
+
+        ArrayList<SpinnerItem> tmpSpinItems;
+        if(spinSel.equals(LangsPannel.SpinSelect.FROM)) {
+            tmpSpinItems = new ArrayList<>(fromSpinnerItems);
+        } else {
+            tmpSpinItems = new ArrayList<>(toSpinnerItems);
+        }
             int tmpSiIndx = 0;
-            for(int i=0;i < fromSpinnerItems.size();i++) {
-                if (fromSpinnerItems.get(i).getLangShortName().equals(inpLang)) {
+            for(int i=0;i < tmpSpinItems.size();i++) {
+                if (tmpSpinItems.get(i).getLangShortName().equals(inpLang)) {
                     tmpSiIndx=i;
                 }
             }
-            SpinnerItem tmpSi = fromSpinnerItems.get(tmpSiIndx);
+            SpinnerItem tmpSi = tmpSpinItems.get(tmpSiIndx);
+                tmpSpinItems.remove(tmpSiIndx);
+                tmpSpinItems.add(0,tmpSi);
 
-            synchronized (this) {
-                fromSpinnerItems.remove(tmpSiIndx);
-                fromSpinnerItems.add(0,tmpSi);
-            }
+
+        if(spinSel.equals(LangsPannel.SpinSelect.FROM)) {
+            fromSpinnerItems = tmpSpinItems;
+        } else {
+            toSpinnerItems = tmpSpinItems;
+        }
 
             for(SpinnerItem it : fromSpinnerItems) {
-                Log.i("rearr ", it.getDisplayName());
+                Log.i("Rearrange" + spinSel.toString() , it.getDisplayName());
             }
-        }
     }
 
 
 
-    public void generateSpinnerArray(Context context, boolean isFrom) {
+    public void generateSpinnerArray(Context context, LangsPannel.SpinSelect spinSel) {
         ArrayList<SpinnerItem> siList = new ArrayList<SpinnerItem>();
         HashSet<String> siSet = new HashSet<>();
-        if (isFrom) {
+        if (spinSel.equals(LangsPannel.SpinSelect.FROM)) {
             for(String[] st : langPairsList) {
                 siSet.add(st[0]);
             }
@@ -125,7 +133,7 @@ public class Prefs {
         }
 
 
-        if(isFrom) {fromSpinnerItems = siList;}
+        if(spinSel.equals(LangsPannel.SpinSelect.FROM)) {fromSpinnerItems = siList;}
         else {toSpinnerItems = siList;}
 
         for (SpinnerItem si : siList) {
@@ -135,10 +143,7 @@ public class Prefs {
     }
 
 
-    public ArrayList<SpinnerItem> getFromSpinnerItems(){
-        return new ArrayList<>(fromSpinnerItems);
-    }
-
+    public ArrayList<SpinnerItem> getFromSpinnerItems(){return new ArrayList<>(fromSpinnerItems);}
 
     public ArrayList<SpinnerItem> getToSpinnerItems() {
         return new ArrayList<>(toSpinnerItems);
