@@ -21,7 +21,7 @@ public class LangsPannel {
     private HashMap<String, Spinner> langSpinners = new HashMap<>();
     private Spinner fromSpinner;
     private Spinner toSpinner;
-    private Context context;
+    public Context context;
 
     public enum SpinSelect {FROM,TO};
 
@@ -36,6 +36,7 @@ public class LangsPannel {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 SpinnerItem si = (SpinnerItem) fromSpinner.getSelectedItem();
                 Prefs.getInstance().fromLang = si.getLangShortName();
+                Prefs.getInstance().rearrangeSpinnerArray(Prefs.getInstance().fromLang, SpinSelect.FROM); //перераспределяем элементы в спиннере, двигаем вверх выбранный
                 Log.i("onItemSelected fromSpi ", si.getDisplayName() + " " + si.getLangShortName() + " pos: " + position);
             }
 
@@ -49,6 +50,7 @@ public class LangsPannel {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 SpinnerItem si = (SpinnerItem) toSpinner.getSelectedItem();
                 Prefs.getInstance().toLang = si.getLangShortName();
+                Prefs.getInstance().rearrangeSpinnerArray(Prefs.getInstance().toLang, SpinSelect.TO);
                 Log.i("onItemSelected toSpi", si.getDisplayName() + " " + si.getLangShortName() + " pos: " + position);
             }
             @Override
@@ -60,8 +62,7 @@ public class LangsPannel {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Prefs.getInstance().rearrangeSpinnerArray(Prefs.getInstance().fromLang, SpinSelect.FROM);
-                    redrawSpinner(SpinSelect.FROM);
+                    redrawSpinner(SpinSelect.FROM);//тут применяем к спиннеру перераспределенные элементы, т.е. список формируется в момент клика по нему, иначе проваливаемся в бесконечный цикл
                 }
                 return false;
             }
@@ -71,7 +72,6 @@ public class LangsPannel {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Prefs.getInstance().rearrangeSpinnerArray(Prefs.getInstance().toLang, SpinSelect.TO);
                     redrawSpinner(SpinSelect.TO);
                 }
                 return false;
@@ -90,6 +90,9 @@ public class LangsPannel {
             ArrayAdapter<SpinnerItem> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, Prefs.getInstance().getToSpinnerItems());
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             toSpinner.setAdapter(adapter);
+        }
+        for(int i=0;i<Prefs.getInstance().getFromSpinnerItems().size() && i<Prefs.getInstance().getToSpinnerItems().size();i++) {
+            Log.i("redrawSpinner", Prefs.getInstance().getFromSpinnerItems().get(i).getDisplayName() + " " + Prefs.getInstance().getToSpinnerItems().get(i).getDisplayName());
         }
     }
 

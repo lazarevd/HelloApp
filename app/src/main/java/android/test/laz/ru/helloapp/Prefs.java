@@ -28,6 +28,10 @@ public class Prefs {
     private ArrayList<SpinnerItem> toSpinnerItems = new ArrayList<>();
     public static String fromLang = "en";
     public static String toLang = "ru";
+    public static final String URL = "https://translate.yandex.net/api/v1.5/tr.json";
+    public static final String KEY = "?key=trnsl.1.1.20170315T111852Z.8e1ce17582bf567d.c36b8c3cf325da51fd6fa504d099559c62fa9102";
+    public static final String TRANLSATE_URL = "/translate";
+    public static final String GETLANGS_URL = "/getLangs";
 
     private Prefs() {
     }

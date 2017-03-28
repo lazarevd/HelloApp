@@ -25,10 +25,6 @@ public class MainActivity extends AppCompatActivity {
     public static TextView toText;
     public LangsPannel langsPannel;
     public Button btn;
-    public static final String URL = "https://translate.yandex.net/api/v1.5/tr.json";
-    public static final String KEY = "?key=trnsl.1.1.20170315T111852Z.8e1ce17582bf567d.c36b8c3cf325da51fd6fa504d099559c62fa9102";
-    public static final String TRANLSATE_URL = "/translate";
-    public static final String GETLANGS_URL = "/getLangs";
     private RequestQueue reqQueue;
     private Prefs prefs;
 
@@ -43,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         langsPannel = new LangsPannel(this);
         fromText = (TextView) findViewById(R.id.fromText);
         if(Prefs.getInstance().getLangPairsList().size() <1) {
-            NetworkWorker.getInstance(this).getLangs(URL, GETLANGS_URL, KEY);
+            NetworkWorker.getInstance(this).getLangs(Prefs.getInstance().URL, Prefs.getInstance().GETLANGS_URL, Prefs.getInstance().KEY);
         } else {
             langsPannel.redrawSpinner(LangsPannel.SpinSelect.FROM);
             langsPannel.redrawSpinner(LangsPannel.SpinSelect.TO);
@@ -73,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 System.out.println("Text changed");
                 String inStr = fromText.getText().toString();
-                NetworkWorker.getInstance(MainActivity.this).translate(URL,TRANLSATE_URL, KEY,  inStr, Prefs.getInstance().fromLang, Prefs.getInstance().toLang);
+                NetworkWorker.getInstance(MainActivity.this).translate(Prefs.getInstance().URL,Prefs.getInstance().TRANLSATE_URL, Prefs.getInstance().KEY,  inStr, Prefs.getInstance().fromLang, Prefs.getInstance().toLang);
                 //prefs.makeJSONfromPrefs();
             }
         });
