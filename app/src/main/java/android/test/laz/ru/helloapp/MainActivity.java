@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -36,9 +37,13 @@ public class MainActivity extends AppCompatActivity {
         fromText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(fromText.getText().equals(getResources().getString(R.string.enterText)));
-                //fromText.setText("");
+                if(fromText.getText().toString().equals(getResources().getString(R.string.enterText)))
+                {
+                    Log.i("ERASE!!!! ", (getResources().getString(R.string.enterText)) + "      " + fromText.getText().toString());
+                    fromText.setText("");
+                } else {
+                    Log.i("NOERASE!!!! ", (getResources().getString(R.string.enterText)) + "      " + fromText.getText().toString());
+                }
             }
         });
 
