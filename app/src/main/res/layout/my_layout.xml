@@ -8,31 +8,79 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
 
         <Spinner
             android:id="@+id/fromSpinner"
-            android:layout_width="189dp"
-            android:layout_height="match_parent" />
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.50" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/switch_b" />
+        </LinearLayout>
 
         <Spinner
             android:id="@+id/toSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.50"/>
     </LinearLayout>
 
     <EditText
         android:id="@+id/fromText"
         android:layout_width="match_parent"
-        android:layout_height="202dp"
+        android:layout_height="73dp"
         android:ems="10"
-        android:text="@string/enterText" />
+        android:text="@string/enterText"
+        android:layout_weight="0.15" />
 
     <EditText
     android:id="@+id/toText"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:ems="10" />
+    android:layout_height="121dp"
+    android:ems="10"
+        android:layout_weight="0.84" />
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_tr"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="@string/switch_tr"
+            android:layout_weight="0.33" />
+        <Button
+            android:id="@+id/button_hs"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="@string/switch_hs"
+            android:layout_weight="0.33" />
+        <Button
+            android:id="@+id/button_fv"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="Button"
+            android:layout_weight="0.33" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -6,10 +6,16 @@
     </string-array>
 
 
-    <string name="app_name" translatable="false">Я.Перевод</string>
+    <string name="app_name" translatable="false">Ya.Translate</string>
     <string name="action_settings" translatable="false">Settings</string>
     <string name="enterText">Введите текст</string>
     <string name="json" translatable="false">owl</string>
+
+    <string name="switch_b">switch</string>
+    <string name="switch_tr">translate</string>
+    <string name="switch_hs">history</string>
+    <string name="switch_fv">favorites</string>
+
 
     <string name="az">Azeri</string>
     <string name="sq">Albanian</string>
