@@ -16,12 +16,11 @@
     <string name="switch_hs">history</string>
     <string name="switch_fv">favorites</string>
 
-
+    <string name="ru">Russian</string>
     <string name="az">Azeri</string>
     <string name="sq">Albanian</string>
     <string name="am">Amharic</string>
     <string name="en">English</string>
-
     <string name="ar">Arabian</string>
     <string name="hy">Armenian</string>
     <string name="af">Af</string>

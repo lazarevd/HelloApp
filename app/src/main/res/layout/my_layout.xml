@@ -79,7 +79,7 @@
             android:id="@+id/button_fv"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:text="Button"
+            android:text="@string/switch_fv"
             android:layout_weight="0.33" />
     </LinearLayout>
 
