@@ -3,10 +3,13 @@ package android.test.laz.ru.helloapp;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.Cache;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -29,6 +32,61 @@ public class NetworkWorker {
     private RequestQueue rQueue;
     private static NetworkWorker netWorker;
     private Context context;
+
+
+    private class CacheRequest extends Request<NetworkResponse> {
+        private final Response.Listener<NetworkResponse> mListener;
+        private final Response.ErrorListener mErrorListener;
+
+        public CacheRequest(int method, String url, Response.Listener<NetworkResponse> listener, Response.ErrorListener errorListener) {
+            super(method, url, errorListener);
+            this.mListener = listener;
+            this.mErrorListener = errorListener;
+        }
+
+
+        @Override
+        protected Response<NetworkResponse> parseNetworkResponse(NetworkResponse response) {
+            Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
+            if (cacheEntry == null) {
+                cacheEntry = new Cache.Entry();
+            }
+            final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
+            final long cacheExpired = 72 * 60 * 60 * 1000; // in 72 hours this cache entry expires completely
+            long now = System.currentTimeMillis();
+            final long softExpire = now + cacheHitButRefreshed;
+            final long ttl = now + cacheExpired;
+            cacheEntry.data = response.data;
+            cacheEntry.softTtl = softExpire;
+            cacheEntry.ttl = ttl;
+            String headerValue;
+            headerValue = response.headers.get("Date");
+            if (headerValue != null) {
+                cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue);
+            }
+            headerValue = response.headers.get("Last-Modified");
+            if (headerValue != null) {
+                cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue);
+            }
+            cacheEntry.responseHeaders = response.headers;
+            return Response.success(response, cacheEntry);
+        }
+
+        @Override
+        protected void deliverResponse(NetworkResponse response) {
+            mListener.onResponse(response);
+        }
+
+        @Override
+        protected VolleyError parseNetworkError(VolleyError volleyError) {
+            return super.parseNetworkError(volleyError);
+        }
+
+        @Override
+        public void deliverError(VolleyError error) {
+            mErrorListener.onErrorResponse(error);
+        }
+    }
 
 
     private NetworkWorker(Context cnxt) {
@@ -107,18 +165,23 @@ public class NetworkWorker {
         }
 
         Log.i("URL ", url);
-        StringRequest sReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+
+        CacheRequest sReq = new CacheRequest(0, url, new Response.Listener<NetworkResponse>() {
             @Override
-            public void onResponse(String response) {
+            public void onResponse(NetworkResponse response) {
                 System.out.println("RESPONSE TRANSLATE: " + response);
 
                 JSONObject resJsonObj = null;
                 String resultText = "";
 
                 try {
-                    resJsonObj = new JSONObject(response);
+                    final String jsonString = new String(response.data,
+                            HttpHeaderParser.parseCharset(response.headers));
+                    resJsonObj = new JSONObject(jsonString);
 
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
 
