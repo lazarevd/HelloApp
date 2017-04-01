@@ -69,12 +69,14 @@
             android:layout_height="match_parent"
             android:text="@string/switch_tr"
             android:layout_weight="0.33" />
+
         <Button
             android:id="@+id/button_hs"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:text="@string/switch_hs"
-            android:layout_weight="0.33" />
+            android:layout_weight="0.33"
+            android:onClick="startHistory"
+            android:text="@string/switch_hs" />
         <Button
             android:id="@+id/button_fv"
             android:layout_width="100dp"

@@ -1,7 +1,7 @@
 <resources>
 
     <string-array name="langs">
-    <item></item>
+        <item></item>
 
     </string-array>
 
@@ -48,7 +48,6 @@
     <string name="it">Italian</string>
     <string name="is">Icelandic</string>
     <string name="es">Spanish</string>
-
 
 
     <string name="fr">French</string>

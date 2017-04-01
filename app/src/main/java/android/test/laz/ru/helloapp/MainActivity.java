@@ -1,5 +1,7 @@
 package android.test.laz.ru.helloapp;
 
+import android.content.Intent;
+import android.net.http.HttpResponseCache;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -8,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +30,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.my_layout);
         prefs = Prefs.getInstance();
         prefs.makePrefsfromJson(this);
+
+
+        try {
+            File httpCacheDir = new File(this.getCacheDir(), "http");
+            long httpCacheSize = 10 * 1024 * 1024; // 10 MiB
+            HttpResponseCache.install(httpCacheDir, httpCacheSize);
+        } catch (IOException e) {
+            Log.i("CACHE", "HTTP response cache installation failed:" + e);
+        }
+
+
+
         langsPannel = new LangsPannel(this);
         fromText = (TextView) findViewById(R.id.fromText);
         if(Prefs.getInstance().getLangPairsList().size() <1) {
@@ -77,5 +93,20 @@ public class MainActivity extends AppCompatActivity {
     Prefs.getInstance().makeJSONfromPrefs(this);
 }
 
+
+
+    @Override
+    protected void onStop() {
+    super.onStop();
+        HttpResponseCache cache = HttpResponseCache.getInstalled();
+        if (cache != null) {
+            cache.flush();
+        }
+    }
+
+public void startHistory(View view) {
+    Intent historyIntent = new Intent(this, HistoryActivity.class);
+    startActivity(historyIntent);
+}
 
 }

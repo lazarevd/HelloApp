@@ -118,7 +118,6 @@ public class NetworkWorker {
                 try {
                     resJsonObj = new JSONObject(response);
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
