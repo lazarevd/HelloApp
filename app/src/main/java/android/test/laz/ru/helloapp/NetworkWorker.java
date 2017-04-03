@@ -118,12 +118,12 @@ public class NetworkWorker {
 
     public void getLangs(String... params) {
         String url = params[0] + params[1] + params[2];
-        StringRequest sReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        StringRequest sReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {//Запрашиваем языковые пары
             @Override
             public void onResponse(String response) {
                 System.out.println("RESP " + response);
-                JSONObject resJsonObj = null;
-                ArrayList<String[]> arrList = new ArrayList<>();//Запрашиваем языковые пары
+                JSONObject resJsonObj;
+                ArrayList<String[]> arrList = new ArrayList<>();
                 try {
                     resJsonObj = new JSONObject(response);
                     JSONArray resJsonArr = resJsonObj.getJSONArray("dirs");
@@ -134,12 +134,14 @@ public class NetworkWorker {
                     e.printStackTrace();
                 }
                 Prefs.getInstance().setLangPairsList(arrList);
-                Prefs.getInstance().generateSpinnerArray(context, LangsPannel.SpinSelect.FROM);
-                Prefs.getInstance().generateSpinnerArray(context, LangsPannel.SpinSelect.TO);
-                Prefs.getInstance().makeJSONfromPrefs(context);
-                TranslateActivity ma = (TranslateActivity) context;
-                ma.langsPannel.redrawSpinner(LangsPannel.SpinSelect.FROM);
-                ma.langsPannel.redrawSpinner(LangsPannel.SpinSelect.TO);
+                if (Prefs.getInstance().getFromSpinnerItems().size() < 1 && Prefs.getInstance().getFromSpinnerItems().size() < 1) {//Если в спиннерах ничего нет, рефрешим их
+                    Prefs.getInstance().generateSpinnerArray(LangsPannel.SpinSelect.FROM);
+                    Prefs.getInstance().generateSpinnerArray(LangsPannel.SpinSelect.TO);
+                    TranslateActivity ma = (TranslateActivity) context;
+                    ma.langsPannel.redrawSpinner(LangsPannel.SpinSelect.FROM);
+                    ma.langsPannel.redrawSpinner(LangsPannel.SpinSelect.TO);
+                    Prefs.getInstance().makeJSONfromPrefs();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -159,10 +161,13 @@ public class NetworkWorker {
         String url = null;
         try {//Кодируем URL
             url = params[0]+params[1]+params[2]+"&text="+URLEncoder.encode(params[3], "utf-8")+"&lang=" + params[4] + "-" + params[5];
-        } catch (UnsupportedEncodingException e) {
+       } catch (UnsupportedEncodingException e) {
             url = params[0]+params[1]+params[2]+"&text="+params[3]+"&lang=" + params[4] + "-" + params[5];
-            e.printStackTrace();
+         e.printStackTrace();
         }
+        Prefs.getInstance().lastTranslateString = params[3];//Припомним текст последнего запроса на случай восстановления приклада из паузы
+
+
 
         Log.i("URL ", url);
 

@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import java.util.HashMap;
@@ -79,10 +80,22 @@ public class LangsPannel {
         });
         langSpinners.put("fromSpinner", fromSpinner);
         langSpinners.put("toSpinner", toSpinner);
+
+
+        //Кнопка смены языка
+        Button switchBtn = (Button) ((Activity) context).findViewById(R.id.switchBtn);
+        switchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Prefs.getInstance().switchLangs();
+                redrawSpinner(SpinSelect.FROM);
+                redrawSpinner(SpinSelect.TO);
+            }
+        });
     }
 
     public void redrawSpinner(SpinSelect spinSel) {
-        if(spinSel.equals(SpinSelect.FROM)) {
+        if(spinSel.equals(SpinSelect.FROM)) {//Затем в зависимости от спиннера применяем элементы к спиннеру
             ArrayAdapter<SpinnerItem> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, Prefs.getInstance().getFromSpinnerItems());
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             fromSpinner.setAdapter(adapter);
@@ -91,9 +104,12 @@ public class LangsPannel {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             toSpinner.setAdapter(adapter);
         }
+
+        /*
         for(int i=0;i<Prefs.getInstance().getFromSpinnerItems().size() && i<Prefs.getInstance().getToSpinnerItems().size();i++) {
             Log.i("redrawSpinner", Prefs.getInstance().getFromSpinnerItems().get(i).getDisplayName() + " " + Prefs.getInstance().getToSpinnerItems().get(i).getDisplayName());
         }
+        */
     }
 
 

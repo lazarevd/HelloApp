@@ -7,9 +7,11 @@
     tools:context="android.test.laz.ru.helloapp.FavoritesActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
 
         <Button
             android:id="@+id/button_tr"
@@ -25,14 +27,14 @@
             android:layout_height="match_parent"
             android:layout_weight="0.33"
             android:onClick="startHistory"
-            android:text="@string/switch_hs"
-            android:enabled="false"/>
+            android:text="@string/switch_hs" />
 
         <Button
             android:id="@+id/button_fv"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_weight="0.33"
-            android:text="@string/switch_fv" />
+            android:text="@string/switch_fv"
+            android:enabled="false"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

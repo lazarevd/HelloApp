@@ -4,6 +4,8 @@ package android.test.laz.ru.helloapp;
  * Created by Dmitry Lazarev on 26.03.2017.
  */
 
+
+//В этом классе хрнятся сокращенные и полные названия языка для отображения в спиннерах
 public class SpinnerItem {
     private String displayName;
     private String langShortName;

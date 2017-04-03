@@ -32,6 +32,8 @@ public class Prefs {
     public static final String KEY = "?key=trnsl.1.1.20170315T111852Z.8e1ce17582bf567d.c36b8c3cf325da51fd6fa504d099559c62fa9102";
     public static final String TRANLSATE_URL = "/translate";
     public static final String GETLANGS_URL = "/getLangs";
+    public static String lastTranslateString = "";
+    private static Context context = null;
 
     private Prefs() {
     }
@@ -47,8 +49,17 @@ public class Prefs {
         return  instance;
     }
 
+    public void init(Context context) {
+        this.context = context;
+        NetworkWorker.getInstance(this.context).getLangs(URL, GETLANGS_URL, KEY);
+        generateSpinnerArray(LangsPannel.SpinSelect.FROM);
+        generateSpinnerArray(LangsPannel.SpinSelect.TO);
+    }
 
-    public synchronized void makeJSONfromPrefs(Context context) {
+
+
+
+    public synchronized void makeJSONfromPrefs() {
         Gson gson = new Gson();
         String filename = SAVE_FILE_NAME;
         String jsonString = gson.toJson(instance).toString();
@@ -61,7 +72,7 @@ public class Prefs {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+/*
         for(SpinnerItem it : fromSpinnerItems) {
             Log.i("Save" + "fromSpinnerItems", it.getDisplayName());
         }
@@ -69,9 +80,10 @@ public class Prefs {
         for(SpinnerItem it : toSpinnerItems) {
             Log.i("Save" + "toSpinnerItems" , it.getDisplayName());
         }
+        */
     }
 
-    public synchronized void makePrefsfromJson(Context context) {
+    public synchronized void makePrefsfromJsonFile() {
         Gson gson = new Gson();
         String jsonRes  = "";
         try {
@@ -91,22 +103,27 @@ public class Prefs {
 
     }
 
-    public void rearrangeSpinnerArray(String inpLang, LangsPannel.SpinSelect spinSel) {
+    public void switchLangs() {
+        rearrangeSpinnerArray(toLang, LangsPannel.SpinSelect.FROM);
+        rearrangeSpinnerArray(fromLang, LangsPannel.SpinSelect.TO);
 
+    }
+
+    public void rearrangeSpinnerArray(String inpLang, LangsPannel.SpinSelect spinSel) {
         ArrayList<SpinnerItem> tmpSpinItems;
         if(spinSel.equals(LangsPannel.SpinSelect.FROM)) {
             tmpSpinItems = new ArrayList<>(fromSpinnerItems);
         } else {
             tmpSpinItems = new ArrayList<>(toSpinnerItems);
         }
-            int tmpSiIndx = 0;
+            int tmpSiIndex = 0;
             for(int i=0;i < tmpSpinItems.size();i++) {
                 if (tmpSpinItems.get(i).getLangShortName().equals(inpLang)) {
-                    tmpSiIndx=i;
+                    tmpSiIndex=i;
                 }
             }
-            SpinnerItem tmpSi = tmpSpinItems.get(tmpSiIndx);
-                tmpSpinItems.remove(tmpSiIndx);
+            SpinnerItem tmpSi = tmpSpinItems.get(tmpSiIndex);
+                tmpSpinItems.remove(tmpSiIndex);
                 tmpSpinItems.add(0,tmpSi);
 
 
@@ -123,10 +140,11 @@ public class Prefs {
 
 
 
-    public void generateSpinnerArray(Context context, LangsPannel.SpinSelect spinSel) {
-        ArrayList<SpinnerItem> siList = new ArrayList<SpinnerItem>();
+    public void generateSpinnerArray(LangsPannel.SpinSelect spinSel) {//Создаем массивы для заполнения спиннеров
+        ArrayList<SpinnerItem> siList = new ArrayList<>();
         HashSet<String> siSet = new HashSet<>();
         if (spinSel.equals(LangsPannel.SpinSelect.FROM)) {
+            //Заполняем сеты для спиннеров из массива языковых пар.
             for(String[] st : langPairsList) {
                 siSet.add(st[0]);
             }
@@ -135,23 +153,21 @@ public class Prefs {
                 siSet.add(st[1]);
             }
         }
-
-        for(String st : siSet) {
+        for(String st : siSet) {//для каждого сокращенного имени создаем объект, содержащий и полное имя на локальном языке
             try {
-                siList.add(new SpinnerItem(st, getStringResourceByName(context, st)));
+                siList.add(new SpinnerItem(st, getStringResourceByName(st)));
             } catch (Resources.NotFoundException nfex) {
                 System.out.println("not found for" + st);
                 siList.add(new SpinnerItem(st, st));
             }
         }
-
-
         if(spinSel.equals(LangsPannel.SpinSelect.FROM)) {fromSpinnerItems = siList;}
         else {toSpinnerItems = siList;}
-
+/*
         for (SpinnerItem si : siList) {
             System.out.println(si.getLangShortName() + " " + si.getDisplayName());
         }
+        */
 
     }
 
@@ -162,7 +178,7 @@ public class Prefs {
         return new ArrayList<>(toSpinnerItems);
     }
 
-    private String getStringResourceByName(Context context, String aString) {
+    private String getStringResourceByName(String aString) {
         String packageName = context.getPackageName();
         int resId = context.getResources().getIdentifier(aString, "string", packageName);
         return context.getString(resId);
@@ -177,11 +193,11 @@ public class Prefs {
         instance.langDisplayNames = langMap;
     }
 
-    public  ArrayList<String[]> getLangPairsList(){
+    public synchronized  ArrayList<String[]> getLangPairsList(){
         return new ArrayList<String[]>(instance.langPairsList);
     }
 
-    public void setLangPairsList(ArrayList<String[]> arrList) {
+    public synchronized void  setLangPairsList(ArrayList<String[]> arrList) {
         instance.langPairsList = arrList;
     }
 

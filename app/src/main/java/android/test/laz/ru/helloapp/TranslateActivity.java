@@ -29,7 +29,14 @@ public class TranslateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.translate_layout);
         prefs = Prefs.getInstance();
-        prefs.makePrefsfromJson(this);
+        prefs.init(this);
+        prefs.makePrefsfromJsonFile();
+        langsPannel = new LangsPannel(this);
+        if(Prefs.getInstance().getLangPairsList().size() <1) {
+        } else {
+            langsPannel.redrawSpinner(LangsPannel.SpinSelect.FROM);
+            langsPannel.redrawSpinner(LangsPannel.SpinSelect.TO);
+        }
 
 
         try {
@@ -42,14 +49,9 @@ public class TranslateActivity extends AppCompatActivity {
 
 
 
-        langsPannel = new LangsPannel(this);
+
         fromText = (TextView) findViewById(R.id.fromText);
-        if(Prefs.getInstance().getLangPairsList().size() <1) {
-            NetworkWorker.getInstance(this).getLangs(Prefs.getInstance().URL, Prefs.getInstance().GETLANGS_URL, Prefs.getInstance().KEY);
-        } else {
-            langsPannel.redrawSpinner(LangsPannel.SpinSelect.FROM);
-            langsPannel.redrawSpinner(LangsPannel.SpinSelect.TO);
-        }
+
         fromText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,14 +86,29 @@ public class TranslateActivity extends AppCompatActivity {
         });
 
         toText = (TextView) findViewById(R.id.toText);
+
+
+
+
     }
 
 
 @Override
     public void onPause() {
-    super.onPause();
-    Prefs.getInstance().makeJSONfromPrefs(this);
-}
+        super.onPause();
+        Prefs.getInstance().makeJSONfromPrefs();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Prefs.getInstance().makePrefsfromJsonFile();
+        String url = Prefs.getInstance().lastTranslateString;
+        if(url.length() > 10) {//Проверяем, чтобы урл был хоть какой-то длинны
+            fromText.setText(url);
+            NetworkWorker.getInstance(this).translateString();
+        }
+    }
 
 
 
@@ -104,12 +121,14 @@ public class TranslateActivity extends AppCompatActivity {
         }
     }
 
+
+
 public  void startHistory(View view) {
     Intent historyIntent = new Intent(this, HistoryActivity.class);
     startActivity(historyIntent);
 }
     public void startFavorites(View view) {
-        Intent historyIntent = new Intent(this, HistoryActivity.class);
+        Intent historyIntent = new Intent(this, FavoritesActivity.class);
         startActivity(historyIntent);
     }
 

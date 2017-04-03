@@ -14,7 +14,7 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     public void startFavorites(View view) {
-        Intent historyIntent = new Intent(this, HistoryActivity.class);
+        Intent historyIntent = new Intent(this, FavoritesActivity.class);
         startActivity(historyIntent);
     }
 
