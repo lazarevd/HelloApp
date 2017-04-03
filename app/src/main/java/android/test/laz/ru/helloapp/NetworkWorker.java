@@ -137,7 +137,7 @@ public class NetworkWorker {
                 Prefs.getInstance().generateSpinnerArray(context, LangsPannel.SpinSelect.FROM);
                 Prefs.getInstance().generateSpinnerArray(context, LangsPannel.SpinSelect.TO);
                 Prefs.getInstance().makeJSONfromPrefs(context);
-                MainActivity ma = (MainActivity) context;
+                TranslateActivity ma = (TranslateActivity) context;
                 ma.langsPannel.redrawSpinner(LangsPannel.SpinSelect.FROM);
                 ma.langsPannel.redrawSpinner(LangsPannel.SpinSelect.TO);
             }
@@ -151,7 +151,7 @@ public class NetworkWorker {
 
 
     public void translateString() {
-        translate(Prefs.getInstance().URL,Prefs.getInstance().TRANLSATE_URL, Prefs.getInstance().KEY,  MainActivity.fromText.getText().toString(), Prefs.getInstance().fromLang, Prefs.getInstance().toLang);
+        translate(Prefs.getInstance().URL,Prefs.getInstance().TRANLSATE_URL, Prefs.getInstance().KEY,  TranslateActivity.fromText.getText().toString(), Prefs.getInstance().fromLang, Prefs.getInstance().toLang);
     }
 
 
@@ -196,7 +196,7 @@ public class NetworkWorker {
                     }
                     Log.i("LOGG:", resultText);
                 }
-                MainActivity.toText.setText(resultText);
+                TranslateActivity.toText.setText(resultText);
             }
         }, new Response.ErrorListener() {
             @Override

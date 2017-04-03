@@ -68,7 +68,8 @@
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:text="@string/switch_tr"
-            android:layout_weight="0.33" />
+            android:layout_weight="0.33"
+            android:enabled="false"/>
 
         <Button
             android:id="@+id/button_hs"
@@ -82,7 +83,9 @@
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:text="@string/switch_fv"
-            android:layout_weight="0.33" />
+            android:layout_weight="0.33"
+            android:onClick="startFavorites"
+            />
     </LinearLayout>
 
 </LinearLayout>

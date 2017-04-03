@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="410dp"
-        android:orientation="horizontal"
-        android:layout_weight="1.05"></LinearLayout>
+    tools:context="android.test.laz.ru.helloapp.FavoritesActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +16,8 @@
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_weight="0.33"
-            android:text="@string/switch_tr" />
+            android:text="@string/switch_tr"
+            android:onClick="startTranslate"/>
 
         <Button
             android:id="@+id/button_hs"
@@ -28,7 +25,8 @@
             android:layout_height="match_parent"
             android:layout_weight="0.33"
             android:onClick="startHistory"
-            android:text="@string/switch_hs" />
+            android:text="@string/switch_hs"
+            android:enabled="false"/>
 
         <Button
             android:id="@+id/button_fv"
@@ -37,5 +35,4 @@
             android:layout_weight="0.33"
             android:text="@string/switch_fv" />
     </LinearLayout>
-
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

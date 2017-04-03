@@ -10,11 +10,16 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        setContentView(R.layout.history_layout);
+    }
+
+    public void startFavorites(View view) {
+        Intent historyIntent = new Intent(this, HistoryActivity.class);
+        startActivity(historyIntent);
     }
 
     public void startTranslate(View view) {
-        Intent historyIntent = new Intent(this, MainActivity.class);
+        Intent historyIntent = new Intent(this, TranslateActivity.class);
         startActivity(historyIntent);
     }
 }

@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class MainActivity extends AppCompatActivity {
+public class TranslateActivity extends AppCompatActivity {
 
     public static String LOG_TAG = "my_log";
     public static TextView fromText;
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_layout);
+        setContentView(R.layout.translate_layout);
         prefs = Prefs.getInstance();
         prefs.makePrefsfromJson(this);
 
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 System.out.println("Text changed");
-                NetworkWorker.getInstance(MainActivity.this).translateString();
+                NetworkWorker.getInstance(TranslateActivity.this).translateString();
                 //prefs.makeJSONfromPrefs();
             }
         });
@@ -104,9 +104,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-public void startHistory(View view) {
+public  void startHistory(View view) {
     Intent historyIntent = new Intent(this, HistoryActivity.class);
     startActivity(historyIntent);
 }
+    public void startFavorites(View view) {
+        Intent historyIntent = new Intent(this, HistoryActivity.class);
+        startActivity(historyIntent);
+    }
 
 }
