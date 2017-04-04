@@ -1,4 +1,4 @@
-package android.test.laz.ru.helloapp;
+package android.test.laz.ru.translateapp;
 
 import android.app.Activity;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package android.test.laz.ru.helloapp;
+package android.test.laz.ru.translateapp;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="android.test.laz.ru.helloapp">
+    package="android.test.laz.ru.translateapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".TranslateActivity"
+            android:name="android.test.laz.ru.translateapp.TranslateActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -21,8 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HistoryActivity" />
-        <activity android:name=".FavoritesActivity"></activity>
+        <activity android:name="android.test.laz.ru.translateapp.HistoryActivity" />
+        <activity android:name="android.test.laz.ru.translateapp.FavoritesActivity"></activity>
     </application>
 
 </manifest>
