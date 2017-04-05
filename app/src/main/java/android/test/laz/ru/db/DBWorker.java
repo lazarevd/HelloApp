@@ -4,6 +4,7 @@ package android.test.laz.ru.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by Dmitry Lazarev on 04.04.2017.
@@ -17,15 +18,14 @@ public class DBWorker extends SQLiteOpenHelper {
     private static final String SQL_CREATE_HISTORY =
             "CREATE TABLE " + DBContract.HistoryEntry.TABLE_NAME + " (" +
                     DBContract.HistoryEntry._ID + " INTEGER PRIMARY KEY," +
-                    DBContract.HistoryEntry.COLUMN_NAME_FROM_TEXT + " TEXT," +
-                    DBContract.HistoryEntry.COLUMN_NAME_TO_TEXT + " TEXT," +
-                    DBContract.HistoryEntry.COLUMN_NAME_DATE + " TEXT)";
+                    DBContract.HistoryEntry.TO_TEXT + " TEXT," +
+                    DBContract.HistoryEntry.DATE + " TEXT)";
 
     private static final String SQL_CREATE_FAVORITES =
             "CREATE TABLE " + DBContract.FavoritesEntry.TABLE_NAME + " (" +
                     DBContract.FavoritesEntry._ID + " INTEGER PRIMARY KEY," +
-                    DBContract.FavoritesEntry.COLUMN_NAME_FROM_TEXT + " TEXT," +
-                    DBContract.FavoritesEntry.COLUMN_NAME_DATE + " TEXT)";
+                    DBContract.FavoritesEntry.FROM_TEXT + " TEXT," +
+                    DBContract.FavoritesEntry.DATE + " TEXT)";
 
     private static final String SQL_DELETE_HISTORY =
             "DROP TABLE IF EXISTS " + DBContract.HistoryEntry.TABLE_NAME;
@@ -37,8 +37,11 @@ public class DBWorker extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.i("SQL_CREATE_HISTORY", SQL_CREATE_HISTORY);
+        Log.i("SQL_CREATE_FAVORITES", SQL_CREATE_FAVORITES);
         db.execSQL(SQL_CREATE_HISTORY);
         db.execSQL(SQL_CREATE_FAVORITES);
     }

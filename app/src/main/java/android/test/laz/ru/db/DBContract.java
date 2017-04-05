@@ -12,14 +12,14 @@ public class DBContract {
 
     public static class HistoryEntry implements BaseColumns {
         public static final String TABLE_NAME = "history";
-        public static final String COLUMN_NAME_FROM_TEXT = "fromText";
-        public static final String COLUMN_NAME_TO_TEXT = "toText";
-        public static final String COLUMN_NAME_DATE = "date";
+        public static final String FROM_TEXT = "fromText";
+        public static final String TO_TEXT = "toText";
+        public static final String DATE = "date";
     }
 
     public static class FavoritesEntry implements BaseColumns {
         public static final String TABLE_NAME = "favorites";
-        public static final String COLUMN_NAME_FROM_TEXT = "fromText";
-        public static final String COLUMN_NAME_DATE = "date";
+        public static final String FROM_TEXT = "fromText";
+        public static final String DATE = "date";
     }
 }
