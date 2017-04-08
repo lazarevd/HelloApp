@@ -1,6 +1,7 @@
 package android.test.laz.ru.translateapp;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,7 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.test.laz.ru.db.DBContract;
 import android.test.laz.ru.db.DBWorker;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CursorAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +36,39 @@ public class FavoritesActivity extends AppCompatActivity {
     }
 
 
+    public class FavoritesCursorAdapter extends CursorAdapter {
+
+        public FavoritesCursorAdapter(Context context, Cursor cursor) {
+            super(context, cursor, 0);
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            return LayoutInflater.from(context).inflate(R.layout.favorites_item, parent, false);
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            TextView fromText = (TextView) findViewById(R.id.favFromText);
+            try {
+                fromText.setText(cursor.getString(1));
+            } catch (NullPointerException npe) {
+                Log.e("No in db", "");
+            }
+            TextView dateText = (TextView) findViewById(R.id.favDate);
+            try {
+            dateText.setText(cursor.getString(2));
+        } catch (NullPointerException npe) {
+            Log.e("No in db", "");
+        }
+
+        }
+
+
+
+    }
+
+
 private ArrayList<FavoritesItem> getFavoriteItemsList() {
     ArrayList<FavoritesItem> ret = new ArrayList<FavoritesItem>();
     SQLiteDatabase db = dbWorker.getReadableDatabase();
@@ -47,6 +86,14 @@ private ArrayList<FavoritesItem> getFavoriteItemsList() {
 }
 
 
+    private Cursor getFavoriteItemsCursor() {
+        SQLiteDatabase db = dbWorker.getReadableDatabase();
+        Cursor ret = db.rawQuery("SELECT * FROM favorites ORDER BY _id", null);
+
+        return ret;
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +104,7 @@ private ArrayList<FavoritesItem> getFavoriteItemsList() {
         dbWorker = new DBWorker(this);
 
 
-
+        ListView favListView = (ListView) findViewById(R.id.favoritesList);
 
 
 
@@ -90,7 +137,9 @@ private ArrayList<FavoritesItem> getFavoriteItemsList() {
         Log.i("VALUES SIZE ", values.size()+" " + ms.size());
         db.insert(DBContract.FavoritesEntry.TABLE_NAME, null, values);
 
-
+        Cursor favCursor = getFavoriteItemsCursor();
+        FavoritesCursorAdapter favCursorAdapter = new FavoritesCursorAdapter(this, favCursor);
+        favListView.setAdapter(favCursorAdapter);
         ArrayList<FavoritesItem> arrItems =  getFavoriteItemsList();
         for (FavoritesItem fi : arrItems) {
             Log.i("FavItem", fi.id + " "+ fi.fromText + " " + fi.date);
