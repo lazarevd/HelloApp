@@ -114,6 +114,7 @@ public class DBWorker extends SQLiteOpenHelper {
     public Cursor getHistoryItemsCursor() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor ret = db.rawQuery("SELECT * FROM " + DBContract.HistoryEntry.TABLE_NAME + " ORDER BY _id DESC", null);
+
         return ret;
     }
 

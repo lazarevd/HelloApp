@@ -41,6 +41,12 @@
             android:layout_weight="0.50" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/insHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -54,6 +60,7 @@
             android:layout_height="match_parent"
             android:text="@string/enterText"
             android:layout_weight="65"/>
+
 
         <EditText
             android:id="@+id/toText"

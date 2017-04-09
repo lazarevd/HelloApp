@@ -1,20 +1,21 @@
 package android.test.laz.ru.translateapp;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.http.HttpResponseCache;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.test.laz.ru.db.DBContract;
 import android.test.laz.ru.db.DBWorker;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class TranslateActivity extends AppCompatActivity {
@@ -84,7 +85,7 @@ public class TranslateActivity extends AppCompatActivity {
                 NetworkWorker.getInstance(TranslateActivity.this).translateString();
             }
         });
-
+/*
         fromText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -96,8 +97,8 @@ public class TranslateActivity extends AppCompatActivity {
                     Pattern p = Pattern.compile("\\s+$");
                     Matcher m = p.matcher(fromTxt);
                     //System.out.println("MATCH \n\n\n " + m.find() + ", Text: " + s.toString() +".");
-                    if (fromTxt != null && m.find()) {//Проверяем, что слова написаны целиком (в конце пробел) и после этого сохраняем их
-                        System.out.println("MOTNULL ADD " + m.find());
+                    if (fromTxt != null) {//Проверяем, что слова написаны целиком (в конце пробел) и после этого сохраняем их
+                        System.out.println(" ADD HISTORY " + m.find());
 
                         DBWorker dbw = DBWorker.getInstance(TranslateActivity.this);
                         dbw.addHistory(fromTxt, toTxt);
@@ -105,6 +106,30 @@ public class TranslateActivity extends AppCompatActivity {
                 }
             }
         });
+*/
+        Button insButton = (Button) findViewById(R.id.insHistory);
+        insButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String fromTxt = fromText.getText().toString();
+                String toTxt = toText.getText().toString();
+                if (fromTxt != null) {//Проверяем, что слова написаны целиком (в конце пробел) и после этого сохраняем их
+                    System.out.println(" ADD HISTORY " + " " + fromTxt+ " " +toTxt);
+
+                    DBWorker dbw = DBWorker.getInstance(TranslateActivity.this);
+                    dbw.addHistory(fromTxt, toTxt);
+
+                    DBWorker dbWorker = DBWorker.getInstance(TranslateActivity.this);
+                    Cursor histCursor = dbWorker.getHistoryItemsCursor();
+                    histCursor.moveToFirst();
+                    while (histCursor.moveToNext()) {
+                        String ret = "ADD History ret " + histCursor.getString(histCursor.getColumnIndex(DBContract.HistoryEntry._ID)) + " " + histCursor.getString(histCursor.getColumnIndex(DBContract.HistoryEntry.FROM_TEXT)) + " " + histCursor.getString(histCursor.getColumnIndex(DBContract.HistoryEntry.TO_TEXT)) + " " + histCursor.getString(histCursor.getColumnIndex(DBContract.HistoryEntry.DATE));
+                        Log.i("ADD History ret", ret);
+                    }
+                }
+            }
+        });
+
 
         toText = (TextView) findViewById(R.id.toText);//Определяем поле перевода
 

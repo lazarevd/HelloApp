@@ -9,7 +9,13 @@
         android:id="@+id/delHist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="del" />
+
+    <Button
+        android:id="@+id/printHist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="print" />
 
     <ListView
         android:id= "@+id/historyList"
