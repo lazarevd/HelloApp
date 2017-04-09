@@ -37,17 +37,18 @@ public class HistoryActivity extends AppCompatActivity {
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             TextView fromText = (TextView) findViewById(R.id.histFromText);
-            cursor.moveToFirst();
-            if (cursor.moveToNext()) {
                 System.out.println("MOVING " + cursor.getCount() + " " + cursor.getPosition());
                 try {
                     String fromTxt = "f" + cursor.getString(1);
                     //if (fromTxt.length() > 11) {
                    //     fromText.setText(fromTxt.substring(0, 10));
                    // } else {
+                    if (fromText !=null) {
                         fromText.setText(fromTxt);
+                    }
                    // }
                 } catch (NullPointerException npe) {
+
                     Log.e("fromText", npe.toString());
                     npe.printStackTrace();
                 } catch (Exception e) {
@@ -61,7 +62,9 @@ public class HistoryActivity extends AppCompatActivity {
                     //if (toTxt.length() > 11) {
                    //     toText.setText(toTxt.substring(0, 10));
                    // } else {
+                    if(toText != null) {
                         toText.setText(toTxt);
+                    }
                   //  }
                 } catch (NullPointerException npe) {
                     Log.e("toText", npe.toString());
@@ -72,38 +75,46 @@ public class HistoryActivity extends AppCompatActivity {
 
                 TextView dateText = (TextView) findViewById(R.id.histDate);
                 try {
-                    dateText.setText(cursor.getString(3));
+                    if (dateText != null) {
+                        dateText.setText(cursor.getString(3));
+                    }
                 } catch (NullPointerException npe) {
                     Log.e("dateText", npe.toString());
                     npe.printStackTrace();
                 } catch (Exception e) {
                     Log.e("No in db", e.toString());
                 }
-            }
+
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        refreshListView();
     }
 
 
 
-    public void redrawListView() {
+    public void refreshListView() {
         histCursorAdapter.notifyDataSetChanged();
+    }
+
+    public void assignAdapter() {
+        dbWorker = DBWorker.getInstance(this);
+        histListView = (ListView) findViewById(R.id.historyList);//Список избранного
+        Cursor histCursor = dbWorker.getHistoryItemsCursor();
+        histCursorAdapter = new HistoryCursorAdapter(this, histCursor);
+        histListView.setAdapter(histCursorAdapter);//Сразу выводим то, что в БД
+        histCursorAdapter.changeCursor(histCursor);
+        //histCursorAdapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history_layout);
-        dbWorker = DBWorker.getInstance(this);
-        histListView = (ListView) findViewById(R.id.historyList);//Список избранного
-        Cursor histCursor = dbWorker.getHistoryItemsCursor();
-        histCursorAdapter = new HistoryCursorAdapter(this, histCursor);
-        histListView.setAdapter(histCursorAdapter);//Сразу выводим то, что в БД
+        assignAdapter();
 
 
 
@@ -133,9 +144,7 @@ public class HistoryActivity extends AppCompatActivity {
                     String ret = "History ret " + histCursor.getString(histCursor.getColumnIndex(DBContract.HistoryEntry._ID)) + " " + histCursor.getString(histCursor.getColumnIndex(DBContract.HistoryEntry.FROM_TEXT)) + " " + histCursor.getString(histCursor.getColumnIndex(DBContract.HistoryEntry.TO_TEXT)) + " " + histCursor.getString(histCursor.getColumnIndex(DBContract.HistoryEntry.DATE));
                     Log.i("History ret", ret);
                 }
-
-                redrawListView();
-
+                refreshListView();
             }
         });
 

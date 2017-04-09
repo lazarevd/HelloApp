@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
+import android.test.laz.ru.translateapp.HistoryActivity;
 import android.test.laz.ru.translateapp.Prefs;
 import android.util.Log;
 
@@ -21,9 +22,11 @@ public class DBWorker extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "TranslateDB.db";
+    public Context context;
 
     private DBWorker(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     public static DBWorker getInstance(Context context) {
@@ -119,6 +122,21 @@ public class DBWorker extends SQLiteOpenHelper {
     }
 
 
+
+    private class GetHistoryCursorTask extends AsyncTask<Void, Void, Cursor > {
+
+        @Override
+        protected Cursor doInBackground(Void... params) {
+            SQLiteDatabase db = getReadableDatabase();
+            Cursor ret = db.rawQuery("SELECT * FROM " + DBContract.HistoryEntry.TABLE_NAME + " ORDER BY _id DESC", null);
+            return ret;
+        }
+
+        protected void onPostExecute(Long result) {
+            HistoryActivity ha = (HistoryActivity) context;
+            ha.refreshListView();
+        }
+    }
 
     private class AddHistoryTask extends AsyncTask<String, Void, Void> {//запись в БД делаем в отдельном потоке
         protected Void doInBackground(String... putValues) {
