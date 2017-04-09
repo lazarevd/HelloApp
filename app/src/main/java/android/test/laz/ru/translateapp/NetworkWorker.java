@@ -35,6 +35,10 @@ public class NetworkWorker {
 
 
     private class CacheRequest extends Request<NetworkResponse> {
+
+        /*Класс, расширяющий базовый класс Request библиотеки Volley с целью в ручную
+        контролировать время кэширования запроса т.к. по умолчанию ожидается, что эти данные отдаст сервер
+         */
         private final Response.Listener<NetworkResponse> mListener;
         private final Response.ErrorListener mErrorListener;
 
@@ -175,10 +179,8 @@ public class NetworkWorker {
             @Override
             public void onResponse(NetworkResponse response) {
                 System.out.println("RESPONSE TRANSLATE: " + response);
-
                 JSONObject resJsonObj = null;
                 String resultText = "";
-
                 try {
                     final String jsonString = new String(response.data,
                             HttpHeaderParser.parseCharset(response.headers));
@@ -201,7 +203,9 @@ public class NetworkWorker {
                     }
                     Log.i("LOGG:", resultText);
                 }
-                TranslateActivity.toText.setText(resultText);
+                TranslateActivity.toText.setText(resultText);//В итоге применяем полученный перевод к текстовому полю
+
+
             }
         }, new Response.ErrorListener() {
             @Override

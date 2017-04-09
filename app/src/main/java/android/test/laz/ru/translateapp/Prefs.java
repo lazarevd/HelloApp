@@ -10,7 +10,9 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -72,15 +74,7 @@ public class Prefs {
         } catch (Exception e) {
             e.printStackTrace();
         }
-/*
-        for(SpinnerItem it : fromSpinnerItems) {
-            Log.i("Save" + "fromSpinnerItems", it.getDisplayName());
-        }
 
-        for(SpinnerItem it : toSpinnerItems) {
-            Log.i("Save" + "toSpinnerItems" , it.getDisplayName());
-        }
-        */
     }
 
     public synchronized void makePrefsfromJsonFile() {
@@ -169,6 +163,12 @@ public class Prefs {
         }
         */
 
+    }
+
+    public static String getCurrentDateString() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yy.mm.dd KK:MM");
+        return sdf.format(calendar.getTime());
     }
 
 

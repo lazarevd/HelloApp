@@ -3,8 +3,7 @@
     android:id="@+id/db1_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-
+    android:orientation="vertical">
 
 
     <LinearLayout
@@ -39,36 +38,44 @@
             android:id="@+id/toSpinner"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.50"/>
+            android:layout_weight="0.50" />
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/fromText"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:text="@string/enterText"
-        />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="0.33"
+        android:weightSum="100">
 
-    <EditText
-    android:id="@+id/toText"
-    android:layout_width="match_parent"
-    android:layout_height="268dp" />
+        <EditText
+            android:id="@+id/fromText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/enterText"
+            android:layout_weight="65"/>
 
+        <EditText
+            android:id="@+id/toText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="35"/>
 
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/button_tr"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:text="@string/switch_tr"
             android:layout_weight="0.33"
-            android:enabled="false"/>
+            android:enabled="false"
+            android:text="@string/switch_tr" />
 
         <Button
             android:id="@+id/button_hs"
@@ -77,14 +84,15 @@
             android:layout_weight="0.33"
             android:onClick="startHistory"
             android:text="@string/switch_hs" />
+
         <Button
             android:id="@+id/button_fv"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:text="@string/switch_fv"
             android:layout_weight="0.33"
             android:onClick="startFavorites"
-            />
+            android:text="@string/switch_fv" />
     </LinearLayout>
+
 
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.http.HttpResponseCache;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.test.laz.ru.db.DBWorker;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -50,7 +51,7 @@ public class TranslateActivity extends AppCompatActivity {
 
 
 
-        fromText = (TextView) findViewById(R.id.fromText);
+        fromText = (TextView) findViewById(R.id.fromText);//Определяем поле исходного текста
 
         fromText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,11 +66,9 @@ public class TranslateActivity extends AppCompatActivity {
             }
         });
 
-
         fromText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -81,14 +80,15 @@ public class TranslateActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 System.out.println("Text changed");
                 NetworkWorker.getInstance(TranslateActivity.this).translateString();
-                //prefs.makeJSONfromPrefs();
+                String[] fromText = s.toString().split(" ");
+                if (fromText != null && fromText.length > 0) {//Проверяем, что слова написаны целиком и после этого сохраняем их
+                    DBWorker dbw = DBWorker.getInstance(TranslateActivity.this);
+                    dbw.addFavorite(s.toString());
+                }
             }
         });
 
-        toText = (TextView) findViewById(R.id.toText);
-
-
-
+        toText = (TextView) findViewById(R.id.toText);//Определяем поле перевода
 
     }
 
