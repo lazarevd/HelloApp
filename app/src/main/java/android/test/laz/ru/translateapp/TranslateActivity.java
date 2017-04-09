@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class TranslateActivity extends AppCompatActivity {
@@ -80,10 +82,26 @@ public class TranslateActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 System.out.println("Text changed");
                 NetworkWorker.getInstance(TranslateActivity.this).translateString();
-                String[] fromText = s.toString().split(" ");
-                if (fromText != null && fromText.length > 0) {//Проверяем, что слова написаны целиком и после этого сохраняем их
-                    DBWorker dbw = DBWorker.getInstance(TranslateActivity.this);
-                    dbw.addFavorite(s.toString());
+            }
+        });
+
+        fromText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    String fromTxt = fromText.getText().toString();
+                    String toTxt = toText.getText().toString();
+
+                    Pattern p = Pattern.compile("\\s+$");
+                    Matcher m = p.matcher(fromTxt);
+                    //System.out.println("MATCH \n\n\n " + m.find() + ", Text: " + s.toString() +".");
+                    if (fromTxt != null && m.find()) {//Проверяем, что слова написаны целиком (в конце пробел) и после этого сохраняем их
+                        System.out.println("MOTNULL ADD " + m.find());
+
+                        DBWorker dbw = DBWorker.getInstance(TranslateActivity.this);
+                        dbw.addHistory(fromTxt, toTxt);
+                    }
                 }
             }
         });

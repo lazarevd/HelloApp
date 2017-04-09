@@ -39,10 +39,37 @@ public class DBWorker extends SQLiteOpenHelper {
         dbWorkerInstance.setContext(context);
     }
 
+    private class HistoryItem {
+        public HistoryItem (int id, String fromText, String toText, String date) {
+            this.id = id;
+            this.fromText = fromText;
+            this.toText = toText;
+            this.date = date;
+        }
+        public int id;
+        public String fromText = "";
+        public String toText = "";
+        public String date = "";
+    }
+
+
+    private class FavoritesItem {
+        public FavoritesItem (int id, String fromText, String date) {
+            this.id = id;
+            this.fromText = fromText;
+            this.date = date;
+        }
+        public int id;
+        public String fromText = "";
+        public String date = "";
+    }
+
+
 
     private final String SQL_CREATE_HISTORY =
             "CREATE TABLE " + DBContract.HistoryEntry.TABLE_NAME + " (" +
                     DBContract.HistoryEntry._ID + " INTEGER PRIMARY KEY," +
+                    DBContract.FavoritesEntry.FROM_TEXT + " TEXT," +
                     DBContract.HistoryEntry.TO_TEXT + " TEXT," +
                     DBContract.HistoryEntry.DATE + " TEXT)";
 
@@ -59,7 +86,9 @@ public class DBWorker extends SQLiteOpenHelper {
             "DELETE FROM " + DBContract.HistoryEntry.TABLE_NAME;
 
 
-
+    public void addFavorite(String inputString) {
+        new AddFavoriteTask().execute(inputString);//запускаем поток записи в БД
+    }
 
     private class AddFavoriteTask extends AsyncTask<String, Void, Void> {//запись в БД делаем в отдельном потоке
         protected Void doInBackground(String... putValues) {
@@ -73,14 +102,18 @@ public class DBWorker extends SQLiteOpenHelper {
         }
     }
 
-    public void addFavorite(String inputString) {
-        new AddFavoriteTask().execute(inputString);//запускаем поток записи в БД
-    }
+
 
 
     public Cursor getFavoriteItemsCursor() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor ret = db.rawQuery("SELECT * FROM favorites ORDER BY _id", null);
+        Cursor ret = db.rawQuery("SELECT * FROM " + DBContract.FavoritesEntry.TABLE_NAME + " ORDER BY _id DESC", null);
+        return ret;
+    }
+
+    public Cursor getHistoryItemsCursor() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor ret = db.rawQuery("SELECT * FROM " + DBContract.HistoryEntry.TABLE_NAME + " ORDER BY _id DESC", null);
         return ret;
     }
 
@@ -100,7 +133,23 @@ public class DBWorker extends SQLiteOpenHelper {
     }
 
     public void addHistory(String inputString, String toText) {
+        System.out.println("EXEC addHistory" + inputString + " " + toText);
         new AddHistoryTask().execute(inputString, toText);//запускаем поток записи в БД
+    }
+
+
+    private class DeleteAllHistoryTask extends AsyncTask<String, Void, Void> {//запись в БД делаем в отдельном потоке
+        protected Void doInBackground(String... putValues) {
+            SQLiteDatabase db = getWritableDatabase();
+            System.out.println("DELETING HISTORY");
+            db.execSQL(SQL_DELETE_HISTORY);
+            db.close();
+            return null;
+        }
+    }
+
+    public void delAllHistory() {
+        new DeleteAllHistoryTask().execute();//запускаем поток записи в БД
     }
 
 
