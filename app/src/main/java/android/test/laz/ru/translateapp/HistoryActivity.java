@@ -36,55 +36,24 @@ public class HistoryActivity extends AppCompatActivity {
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            TextView fromText = (TextView) findViewById(R.id.histFromText);
-                System.out.println("MOVING " + cursor.getCount() + " " + cursor.getPosition());
-                try {
-                    String fromTxt = "f" + cursor.getString(1);
-                    //if (fromTxt.length() > 11) {
-                   //     fromText.setText(fromTxt.substring(0, 10));
-                   // } else {
-                    if (fromText !=null) {
-                        fromText.setText(fromTxt);
+            System.out.println("VIEW " + view);
+                 TextView fromTextView = (TextView) view.findViewById(R.id.histFromText);//не забываем указать view, а то на первом элементе свалится
+            System.out.println("TEXT VIEW " + fromTextView);
+            String fromTxt = cursor.getString(1);
+                    if (fromTxt.length() > 11) {
+                        fromTextView.setText(fromTxt.substring(0, 10));
+                    } else {
+                            fromTextView.setText(fromTxt);
+                        }
+                        TextView toTextView = (TextView) view.findViewById(R.id.histToText);
+                        String toTxt = cursor.getString(2);
+                        if (toTxt.length() > 11) {
+                             toTextView.setText(toTxt.substring(0, 10));
+                         } else {
+                            toTextView.setText(toTxt);
+                        TextView dateText = (TextView) view.findViewById(R.id.histDate);
+                            dateText.setText(cursor.getString(3));
                     }
-                   // }
-                } catch (NullPointerException npe) {
-
-                    Log.e("fromText", npe.toString());
-                    npe.printStackTrace();
-                } catch (Exception e) {
-                    Log.e("No in db", e.toString());
-                }
-
-
-                TextView toText = (TextView) findViewById(R.id.histToText);
-                try {
-                    String toTxt = "t" + cursor.getString(2);
-                    //if (toTxt.length() > 11) {
-                   //     toText.setText(toTxt.substring(0, 10));
-                   // } else {
-                    if(toText != null) {
-                        toText.setText(toTxt);
-                    }
-                  //  }
-                } catch (NullPointerException npe) {
-                    Log.e("toText", npe.toString());
-                    npe.printStackTrace();
-                } catch (Exception e) {
-                    Log.e("No in db", e.toString());
-                }
-
-                TextView dateText = (TextView) findViewById(R.id.histDate);
-                try {
-                    if (dateText != null) {
-                        dateText.setText(cursor.getString(3));
-                    }
-                } catch (NullPointerException npe) {
-                    Log.e("dateText", npe.toString());
-                    npe.printStackTrace();
-                } catch (Exception e) {
-                    Log.e("No in db", e.toString());
-                }
-
         }
     }
 
@@ -97,24 +66,22 @@ public class HistoryActivity extends AppCompatActivity {
 
 
     public void refreshListView() {
+        dbWorker.getHistoryItemsCursor();
+        histCursorAdapter.changeCursor(dbWorker.getHistoryItemsCursor());
         histCursorAdapter.notifyDataSetChanged();
     }
 
-    public void assignAdapter() {
-        dbWorker = DBWorker.getInstance(this);
-        histListView = (ListView) findViewById(R.id.historyList);//Список избранного
-        Cursor histCursor = dbWorker.getHistoryItemsCursor();
-        histCursorAdapter = new HistoryCursorAdapter(this, histCursor);
-        histListView.setAdapter(histCursorAdapter);//Сразу выводим то, что в БД
-        histCursorAdapter.changeCursor(histCursor);
-        //histCursorAdapter.notifyDataSetChanged();
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history_layout);
-        assignAdapter();
+        dbWorker = DBWorker.getInstance(this);
+        histListView = (ListView) findViewById(R.id.historyList);//Список избранного
+        Cursor histCursor = dbWorker.getHistoryItemsCursor();
+        histCursorAdapter = new HistoryCursorAdapter(this, histCursor);
+        histListView.setAdapter(histCursorAdapter);//Сразу выводим то, что в БД
 
 
 

@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class TranslateActivity extends AppCompatActivity {
@@ -85,7 +87,7 @@ public class TranslateActivity extends AppCompatActivity {
                 NetworkWorker.getInstance(TranslateActivity.this).translateString();
             }
         });
-/*
+
         fromText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -106,7 +108,7 @@ public class TranslateActivity extends AppCompatActivity {
                 }
             }
         });
-*/
+
         Button insButton = (Button) findViewById(R.id.insHistory);
         insButton.setOnClickListener(new View.OnClickListener() {
             @Override
