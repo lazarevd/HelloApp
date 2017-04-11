@@ -154,18 +154,11 @@ public class DBWorker extends SQLiteOpenHelper {
     }
 
 
-    private class DeleteAllHistoryTask extends AsyncTask<String, Void, Void> {//запись в БД делаем в отдельном потоке
-        protected Void doInBackground(String... putValues) {
-            SQLiteDatabase db = getWritableDatabase();
-            System.out.println("DELETING HISTORY");
-            db.execSQL(SQL_DELETE_HISTORY);
-            db.close();
-            return null;
-        }
-    }
-
     public void delAllHistory() {
-        new DeleteAllHistoryTask().execute();//запускаем поток записи в БД
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(SQL_DELETE_HISTORY);
+        db.close();
+        //new DeleteAllHistoryTask().execute();//запускаем поток записи в БД
     }
 
 

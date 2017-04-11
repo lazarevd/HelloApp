@@ -70,11 +70,23 @@ public class HistoryActivity extends AppCompatActivity {
         histCursorAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {//Создаем меню в тайтлбаре
+        getMenuInflater().inflate(R.menu.menu_history, menu);
+        return super.onCreateOptionsMenu(menu);
 
+    }
+    public void onDeleteAllHistory(MenuItem item) {
+        dbWorker.delAllHistory();
+        refreshListView();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(getResources().getString(R.string.history_activity));
+
+
         setContentView(R.layout.history_layout);
         dbWorker = DBWorker.getInstance(this);
         histListView = (ListView) findViewById(R.id.historyList);//Список избранного
@@ -112,7 +124,6 @@ public class HistoryActivity extends AppCompatActivity {
 
     public boolean onContextItemSelected(MenuItem item) {
         long id = ((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).id;
-        System.out.println(id);
         dbWorker.deleteHistoryById(id);
         refreshListView();
         return true;

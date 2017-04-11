@@ -10,6 +10,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
@@ -26,16 +27,25 @@ public class TranslateActivity extends AppCompatActivity {
     private int SAVE_HISTORY_TIMEOUT = 3000;
     private Prefs prefs;
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_translate, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.translate_layout);
+        setTitle(getResources().getString(R.string.translate_activity));
         prefs = Prefs.getInstance();
         prefs.init(this);
         prefs.makePrefsfromJsonFile();
         langsPannel = new LangsPannel(this);
+
+
         if(Prefs.getInstance().getLangPairsList().size() <1) {
         } else {
             langsPannel.redrawSpinner(LangsPannel.SpinSelect.FROM);

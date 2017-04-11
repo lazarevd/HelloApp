@@ -6,7 +6,12 @@
     </string-array>
 
 
-    <string name="app_name" translatable="false">Ya.Translate</string>
+    <string name="app_name">Ya.Translate</string>
+    <string name="translate_activity">Ya.Translate</string>
+    <string name="history_activity">History</string>
+    <string name="favorites_activity">Favorites</string>
+    <string name="delete_all_menu_item">delete all</string>
+
     <string name="action_settings" translatable="false">Settings</string>
     <string name="enterText">Введите текст</string>
     <string name="json" translatable="false">owl</string>
