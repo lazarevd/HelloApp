@@ -40,7 +40,7 @@ public class HistoryActivity extends AppCompatActivity {
                  TextView fromTextView = (TextView) view.findViewById(R.id.histFromText);//не забываем указать view, а то на первом элементе свалится
             String fromTxt = cursor.getString(1);
                     if (fromTxt.length() > 11) {
-                        fromTextView.setText(fromTxt.substring(0, 10) + "...");
+                        fromTextView.setText(fromTxt.substring(0, 10) + "...(" + fromTxt.length()+")");
                     } else {
                             fromTextView.setText(fromTxt);
                         }
@@ -103,7 +103,7 @@ public class HistoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println("ITEM CLICK " + position + " " + id);
-                dbWorker.getHistoryById(id);
+                startTranslateAfterHistory(dbWorker.getHistoryFromTextById(id));
             }
 
         });
@@ -129,6 +129,12 @@ public class HistoryActivity extends AppCompatActivity {
         return true;
     }
 
+
+    public void startTranslateAfterHistory(String fromText) {
+        Intent historyIntent = new Intent(this, TranslateActivity.class);
+        historyIntent.putExtra(Intent.EXTRA_TEXT, fromText);
+        startActivity(historyIntent);
+    }
 
     public void startFavorites(View view) {
         Intent historyIntent = new Intent(this, FavoritesActivity.class);

@@ -10,6 +10,8 @@ import android.os.AsyncTask;
 import android.test.laz.ru.translateapp.Prefs;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 /**
  * Created by Dmitry Lazarev on 04.04.2017.
  */
@@ -84,6 +86,10 @@ public class DBWorker extends SQLiteOpenHelper {
     private final String SQL_DELETE_HISTORY =
             "DELETE FROM " + DBContract.HistoryEntry.TABLE_NAME;
 
+    private final String SQL_SELECTALL_HISTORY =
+            "SELECT * FROM " + DBContract.HistoryEntry.TABLE_NAME;
+
+
     private final String SQL_DELETE_FAVORITES =
             "DELETE FROM " + DBContract.HistoryEntry.TABLE_NAME;
 
@@ -139,12 +145,33 @@ public class DBWorker extends SQLiteOpenHelper {
         new AddHistoryTask().execute(inputString, toText);//запускаем поток записи в БД
     }
 
-    public void getHistoryById(long id) {
+    public String getHistoryFromTextById(long id) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + DBContract.HistoryEntry.TABLE_NAME + " WHERE " + DBContract.HistoryEntry._ID + "=" + id, null);
         cursor.moveToFirst();
-
+       return cursor.getString(cursor.getColumnIndexOrThrow(DBContract.HistoryEntry.FROM_TEXT));
     }
+
+    public boolean isInHistory(String stringFromText) {
+        ArrayList<String> toTextStrings = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(SQL_SELECTALL_HISTORY,null);
+        cursor.moveToFirst();
+        while (cursor.moveToNext()) {
+            toTextStrings.add(cursor.getString(cursor.getColumnIndex(DBContract.HistoryEntry.FROM_TEXT)));
+        }
+        cursor.close();
+        System.out.println(toTextStrings.size());
+        for (String str : toTextStrings) {
+            System.out.println("str " + str + " " + stringFromText);
+            if(str.equals(stringFromText)) {
+                System.out.println("true");
+                return true;
+            }
+        }
+        System.out.println("false");
+        return false;
+    };
 
     public void deleteHistoryById(long id) {
         SQLiteDatabase db = getWritableDatabase();

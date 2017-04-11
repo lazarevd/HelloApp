@@ -43,6 +43,8 @@ public class TranslateActivity extends AppCompatActivity {
         prefs = Prefs.getInstance();
         prefs.init(this);
         prefs.makePrefsfromJsonFile();
+        Intent intent = getIntent();
+
         langsPannel = new LangsPannel(this);
 
 
@@ -77,7 +79,7 @@ public class TranslateActivity extends AppCompatActivity {
         });
 
         /*Сохранять запись в историю будем по событию смены текста в пле ввода и
-        * после ожидания в пару секунд, чтобы не плодить туда записи. Для тайм-аута используем Хендлер*/
+        * после ожидания в пару секунд, чтобы не плодить туда записи. Для тайм-аута  используем Хендлер*/
         final Handler saveToHistoryHandler = new Handler();
         final Runnable saveToHistoryRunnable = new Runnable() {
             @Override
@@ -86,7 +88,10 @@ public class TranslateActivity extends AppCompatActivity {
                 String fromTxt = fromText.getText().toString();
                 String toTxt = toText.getText().toString();
                 DBWorker dbw = DBWorker.getInstance(TranslateActivity.this);
-                dbw.addHistory(fromTxt, toTxt);
+     //TODO добавляет существующие все равно
+                if (!dbw.isInHistory(fromTxt));
+                {dbw.addHistory(fromTxt, toTxt);
+                     }
             }
         };
 
@@ -109,8 +114,6 @@ public class TranslateActivity extends AppCompatActivity {
                     NetworkWorker.getInstance(TranslateActivity.this).translateString(fromTxt);
                 }
                 saveToHistoryHandler.removeCallbacksAndMessages(null);//Всякий раз как текст меняется, очищаем очередь в хендлере
-
-
                 //System.out.println("MATCH \n\n\n " + m.find() + ", Text: " + s.toString() +".");
                 if (fromTxt != null && fromTxt.length() > 1 && !fromTxt.equals(getResources().getString(R.string.enterText))) {//Проверяем, что слова написаны целиком (в конце пробел) и после этого сохраняем их
                     saveToHistoryHandler.postDelayed(saveToHistoryRunnable, SAVE_HISTORY_TIMEOUT);//запускаем таймер, если за это время текст не изменится, сохраним его в историю
@@ -118,7 +121,10 @@ public class TranslateActivity extends AppCompatActivity {
             }
         });
 
-
+        String intentString = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (intentString != null && !intentString.equals("")) {
+            fromText.setText(intentString);
+        }
 
         toText = (TextView) findViewById(R.id.toText);//Определяем поле перевода
         toText.setInputType(InputType.TYPE_NULL);
