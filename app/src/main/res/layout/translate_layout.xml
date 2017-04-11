@@ -42,6 +42,7 @@
     </LinearLayout>
 
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -49,20 +50,48 @@
         android:layout_weight="0.33"
         android:weightSum="100">
 
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="65"
+            >
+
+
         <EditText
             android:id="@+id/fromText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/enterText"
-            android:layout_weight="65"/>
+            android:layout_weight="0.10"
+            android:text="@string/enterText"></EditText>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="0.90"
+                >
+
+            <Button
+                android:id="@+id/addToFavBtn"
+                android:layout_height="32dp"
+                android:layout_width="32dp"
+                android:onClick="addToFavorites"
+                android:text="*" />
+            </LinearLayout>
+
+        </LinearLayout>
 
 
         <TextView
             android:id="@+id/toText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="35"
-            android:textIsSelectable="true"/>
+            android:textIsSelectable="true"
+            android:layout_weight="35"/>
 
     </LinearLayout>
 

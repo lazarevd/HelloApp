@@ -20,7 +20,6 @@ import android.widget.TextView;
 public class HistoryActivity extends AppCompatActivity {
 
     private DBWorker dbWorker;
-
     HistoryCursorAdapter histCursorAdapter;
     ListView histListView;
 
@@ -70,6 +69,7 @@ public class HistoryActivity extends AppCompatActivity {
         histCursorAdapter.notifyDataSetChanged();
     }
 
+    //Создаем меню в экшнбаре
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {//Создаем меню в тайтлбаре
         getMenuInflater().inflate(R.menu.menu_history, menu);
@@ -85,9 +85,8 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(getResources().getString(R.string.history_activity));
-
-
         setContentView(R.layout.history_layout);
+
         dbWorker = DBWorker.getInstance(this);
         histListView = (ListView) findViewById(R.id.historyList);//Список избранного
 
@@ -107,7 +106,6 @@ public class HistoryActivity extends AppCompatActivity {
             }
 
         });
-
 
         Cursor histCursor = dbWorker.getHistoryItemsCursor();
         histCursorAdapter = new HistoryCursorAdapter(this, histCursor);
@@ -132,7 +130,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     public void startTranslateAfterHistory(String fromText) {
         Intent historyIntent = new Intent(this, TranslateActivity.class);
-        historyIntent.putExtra(Intent.EXTRA_TEXT, fromText);
+        historyIntent.putExtra("transfer_history", fromText);
         startActivity(historyIntent);
     }
 

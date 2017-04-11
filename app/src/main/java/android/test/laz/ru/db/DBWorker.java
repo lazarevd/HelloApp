@@ -43,45 +43,23 @@ public class DBWorker extends SQLiteOpenHelper {
         dbWorkerInstance.setContext(context);
     }
 
-    private class HistoryItem {
-        public HistoryItem (int id, String fromText, String toText, String date) {
-            this.id = id;
-            this.fromText = fromText;
-            this.toText = toText;
-            this.date = date;
-        }
-        public int id;
-        public String fromText = "";
-        public String toText = "";
-        public String date = "";
-    }
-
-
-    private class FavoritesItem {
-        public FavoritesItem (int id, String fromText, String date) {
-            this.id = id;
-            this.fromText = fromText;
-            this.date = date;
-        }
-        public int id;
-        public String fromText = "";
-        public String date = "";
-    }
-
 
 
     private final String SQL_CREATE_HISTORY =
             "CREATE TABLE " + DBContract.HistoryEntry.TABLE_NAME + " (" +
                     DBContract.HistoryEntry._ID + " INTEGER PRIMARY KEY," +
-                    DBContract.FavoritesEntry.FROM_TEXT + " TEXT," +
+                    DBContract.HistoryEntry.FROM_TEXT + " TEXT," +
                     DBContract.HistoryEntry.TO_TEXT + " TEXT," +
-                    DBContract.HistoryEntry.DATE + " TEXT)";
+                    DBContract.HistoryEntry.DATE + " TEXT," +
+                    DBContract.HistoryEntry.DIR + " TEXT)";
 
     private final String SQL_CREATE_FAVORITES =
             "CREATE TABLE " + DBContract.FavoritesEntry.TABLE_NAME + " (" +
                     DBContract.FavoritesEntry._ID + " INTEGER PRIMARY KEY," +
                     DBContract.FavoritesEntry.FROM_TEXT + " TEXT," +
-                    DBContract.FavoritesEntry.DATE + " TEXT)";
+                    DBContract.FavoritesEntry.TO_TEXT + " TEXT," +
+                    DBContract.HistoryEntry.DATE + " TEXT," +
+                    DBContract.HistoryEntry.DIR + " TEXT)";
 
     private final String SQL_DELETE_HISTORY =
             "DELETE FROM " + DBContract.HistoryEntry.TABLE_NAME;
@@ -91,7 +69,7 @@ public class DBWorker extends SQLiteOpenHelper {
 
 
     private final String SQL_DELETE_FAVORITES =
-            "DELETE FROM " + DBContract.HistoryEntry.TABLE_NAME;
+            "DELETE FROM " + DBContract.FavoritesEntry.TABLE_NAME;
 
 
     public void addFavorite(String inputString) {
@@ -103,11 +81,17 @@ public class DBWorker extends SQLiteOpenHelper {
             SQLiteDatabase db = getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(DBContract.FavoritesEntry.FROM_TEXT, putValues[0]);
+            values.put(DBContract.FavoritesEntry.TO_TEXT, putValues[1]);
             values.put(DBContract.FavoritesEntry.DATE, Prefs.getCurrentDateString());
             db.insert(DBContract.FavoritesEntry.TABLE_NAME, null, values);
             db.close();
             return null;
         }
+    }
+
+    public void addFavorite(String inputString, String toText) {
+        System.out.println("EXEC addFavorite" + inputString + " " + toText);
+        new AddFavoriteTask().execute(inputString, toText);//запускаем поток записи в БД
     }
 
 
@@ -132,7 +116,10 @@ public class DBWorker extends SQLiteOpenHelper {
             SQLiteDatabase db = getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(DBContract.HistoryEntry.FROM_TEXT, putValues[0]);
-            values.put(DBContract.HistoryEntry.TO_TEXT, putValues[1]);
+            if (putValues[1].length() >= 11) {//Пишем короткую перевода, все равно потом запросим
+                values.put(DBContract.HistoryEntry.TO_TEXT, putValues[1].substring(0, 10));
+            } else {
+                values.put(DBContract.HistoryEntry.TO_TEXT, putValues[1]);}
             values.put(DBContract.HistoryEntry.DATE, Prefs.getCurrentDateString());
             db.insert(DBContract.HistoryEntry.TABLE_NAME, null, values);
             db.close();
@@ -152,15 +139,26 @@ public class DBWorker extends SQLiteOpenHelper {
        return cursor.getString(cursor.getColumnIndexOrThrow(DBContract.HistoryEntry.FROM_TEXT));
     }
 
+    public String[] getFavoritesFromTextById(long id) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DBContract.FavoritesEntry.TABLE_NAME + " WHERE " + DBContract.FavoritesEntry._ID + "=" + id, null);
+        cursor.moveToFirst();
+        String [] ret = new String[2];
+        ret[0] = cursor.getString(cursor.getColumnIndexOrThrow(DBContract.FavoritesEntry.FROM_TEXT));
+        ret[1] = cursor.getString(cursor.getColumnIndexOrThrow(DBContract.FavoritesEntry.TO_TEXT));
+        return ret;
+    }
+
     public boolean isInHistory(String stringFromText) {
         ArrayList<String> toTextStrings = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(SQL_SELECTALL_HISTORY,null);
-        cursor.moveToFirst();
+        //cursor.moveToFirst();
         while (cursor.moveToNext()) {
             toTextStrings.add(cursor.getString(cursor.getColumnIndex(DBContract.HistoryEntry.FROM_TEXT)));
         }
         cursor.close();
+        db.close();
         System.out.println(toTextStrings.size());
         for (String str : toTextStrings) {
             System.out.println("str " + str + " " + stringFromText);
@@ -180,12 +178,26 @@ public class DBWorker extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deleteFavoriteById(long id) {
+        SQLiteDatabase db = getWritableDatabase();
+        System.out.println("DELETING " + id);
+        db.execSQL("DELETE FROM " + DBContract.FavoritesEntry.TABLE_NAME + " WHERE " + DBContract.FavoritesEntry._ID + "=" + id);
+        db.close();
+    }
+
 
     public void delAllHistory() {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(SQL_DELETE_HISTORY);
         db.close();
         //new DeleteAllHistoryTask().execute();//запускаем поток записи в БД
+    }
+
+
+    public void delAllFavorites() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(SQL_DELETE_FAVORITES);
+        db.close();
     }
 
 

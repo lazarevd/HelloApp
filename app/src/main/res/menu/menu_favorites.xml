@@ -6,5 +6,6 @@
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/delete_all_menu_item"
+        android:onClick="onDeleteAllFavorites"
         app:showAsAction="never" />
 </menu>

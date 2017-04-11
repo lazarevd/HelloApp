@@ -43,7 +43,6 @@ public class TranslateActivity extends AppCompatActivity {
         prefs = Prefs.getInstance();
         prefs.init(this);
         prefs.makePrefsfromJsonFile();
-        Intent intent = getIntent();
 
         langsPannel = new LangsPannel(this);
 
@@ -88,9 +87,9 @@ public class TranslateActivity extends AppCompatActivity {
                 String fromTxt = fromText.getText().toString();
                 String toTxt = toText.getText().toString();
                 DBWorker dbw = DBWorker.getInstance(TranslateActivity.this);
-     //TODO добавляет существующие все равно
-                if (!dbw.isInHistory(fromTxt));
-                {dbw.addHistory(fromTxt, toTxt);
+                if (!dbw.isInHistory(fromTxt))
+                {System.out.println("STARTING PRINT HISTORY");
+                    dbw.addHistory(fromTxt, toTxt);
                      }
             }
         };
@@ -121,9 +120,20 @@ public class TranslateActivity extends AppCompatActivity {
             }
         });
 
-        String intentString = intent.getStringExtra(Intent.EXTRA_TEXT);
-        if (intentString != null && !intentString.equals("")) {
-            fromText.setText(intentString);
+        Intent intent = getIntent();
+
+        Bundle extras = intent.getExtras();
+        if (extras !=null) {
+            if (extras.containsKey("favorites_extra")) {
+                String[] intentString = intent.getStringArrayExtra("favorites_extra");
+                if (intentString != null && intentString.length == 2) {
+                    fromText.setText(intentString[0]);
+                    toText.setText(intentString[1]);
+                }
+            } else if (extras.containsKey("transfer_history")) {
+                String intentString = intent.getStringExtra("transfer_history");
+                fromText.setText(intentString);
+            }
         }
 
         toText = (TextView) findViewById(R.id.toText);//Определяем поле перевода
@@ -160,7 +170,10 @@ public class TranslateActivity extends AppCompatActivity {
         }
     }
 
-
+public void addToFavorites(View view) {
+    DBWorker dbw = DBWorker.getInstance(TranslateActivity.this);
+    dbw.addFavorite(fromText.getText().toString(), toText.getText().toString());
+}
 
 public  void startHistory(View view) {
     Intent historyIntent = new Intent(this, HistoryActivity.class);
