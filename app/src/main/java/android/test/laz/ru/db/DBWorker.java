@@ -116,7 +116,7 @@ public class DBWorker extends SQLiteOpenHelper {
             SQLiteDatabase db = getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(DBContract.HistoryEntry.FROM_TEXT, putValues[0]);
-            if (putValues[1].length() >= 11) {//Пишем короткую перевода, все равно потом запросим
+            if (putValues[1].length() >= 50) {//Пишем сокращение перевода, все равно потом запросим
                 values.put(DBContract.HistoryEntry.TO_TEXT, putValues[1].substring(0, 10));
             } else {
                 values.put(DBContract.HistoryEntry.TO_TEXT, putValues[1]);}

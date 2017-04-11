@@ -167,7 +167,7 @@ public class Prefs {
 
     public static String getCurrentDateString() {
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yy.mm.dd KK:MM");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy KK:mm");
         return sdf.format(calendar.getTime());
     }
 

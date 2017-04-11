@@ -36,21 +36,22 @@ public class HistoryActivity extends AppCompatActivity {
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-                 TextView fromTextView = (TextView) view.findViewById(R.id.histFromText);//не забываем указать view, а то на первом элементе свалится
+                 int cutWords = 20;
+            TextView fromTextView = (TextView) view.findViewById(R.id.histFromText);//не забываем указать view, а то на первом элементе свалится
             String fromTxt = cursor.getString(1);
-                    if (fromTxt.length() > 11) {
-                        fromTextView.setText(fromTxt.substring(0, 10) + "...(" + fromTxt.length()+")");
+                    if (fromTxt.length() > cutWords) {
+                        fromTextView.setText(fromTxt.substring(0, cutWords-1) + "...(" + fromTxt.length()+")");
                     } else {
                             fromTextView.setText(fromTxt);
                         }
                         TextView toTextView = (TextView) view.findViewById(R.id.histToText);
                         String toTxt = cursor.getString(2);
-                        if (toTxt.length() > 11) {
-                             toTextView.setText(toTxt.substring(0, 10) + "...");
+                        if (toTxt.length() > cutWords) {
+                             toTextView.setText(toTxt.substring(0, cutWords-1) + "...");
                          } else {
                             toTextView.setText(toTxt);
                         TextView dateText = (TextView) view.findViewById(R.id.histDate);
-                            dateText.setText(cursor.getString(3) + "...");
+                            dateText.setText(cursor.getString(3));
                     }
         }
     }

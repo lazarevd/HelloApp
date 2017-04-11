@@ -39,19 +39,18 @@ public class FavoritesActivity extends AppCompatActivity {
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
+            int cutWords = 20;
             TextView fromTextView = (TextView) view.findViewById(R.id.favFromText);
             String fromTxt = cursor.getString(1);
-            if (fromTxt.length() > 11) {
-                fromTextView.setText(fromTxt.substring(0, 10) + "...(" + fromTxt.length()+")");
+            if (fromTxt.length() > cutWords) {
+                fromTextView.setText(fromTxt.substring(0, cutWords-1) + "...(" + fromTxt.length()+")");
             } else {
                 fromTextView.setText(fromTxt);
             }
-
-            fromTextView.setText(cursor.getString(1));
             TextView toTextView = (TextView) view.findViewById(R.id.favToText);
-            String toTxt = cursor.getString(1);
-            if (toTxt.length() > 11) {
-                toTextView.setText(toTxt.substring(0, 10) + "...(" + toTxt.length()+")");
+            String toTxt = cursor.getString(2);
+            if (toTxt.length() > cutWords) {
+                toTextView.setText(toTxt.substring(0, cutWords-1) + "...");
             } else {
                 toTextView.setText(toTxt);
             }
@@ -136,6 +135,11 @@ public class FavoritesActivity extends AppCompatActivity {
         favCursorAdapter.notifyDataSetChanged();
     }
 
+
+    public void startTranslate(View view) {
+        Intent historyIntent = new Intent(this, TranslateActivity.class);
+        startActivity(historyIntent);
+    }
 
     public  void startHistory(View view) {
         Intent historyIntent = new Intent(this, HistoryActivity.class);

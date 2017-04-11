@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.test.laz.ru.db.DBWorker;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -121,23 +120,24 @@ public class TranslateActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-
-        Bundle extras = intent.getExtras();
-        if (extras !=null) {
-            if (extras.containsKey("favorites_extra")) {
-                String[] intentString = intent.getStringArrayExtra("favorites_extra");
-                if (intentString != null && intentString.length == 2) {
-                    fromText.setText(intentString[0]);
-                    toText.setText(intentString[1]);
+        if (intent != null) {
+            Bundle extras = intent.getExtras();
+            if (extras != null) {
+                if (extras.containsKey("favorites_extra")) {
+                    String[] intentString = intent.getStringArrayExtra("favorites_extra");
+                    if (intentString != null && intentString.length == 2) {
+                        fromText.setText(intentString[0]);
+                        toText.setText(intentString[1]);
+                    }
+                } else if (extras.containsKey("transfer_history")) {
+                    String intentString = intent.getStringExtra("transfer_history");
+                    fromText.setText(intentString);
                 }
-            } else if (extras.containsKey("transfer_history")) {
-                String intentString = intent.getStringExtra("transfer_history");
-                fromText.setText(intentString);
             }
         }
 
         toText = (TextView) findViewById(R.id.toText);//Определяем поле перевода
-        toText.setInputType(InputType.TYPE_NULL);
+        toText.setKeyListener(null);
 
     }
 
