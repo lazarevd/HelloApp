@@ -3,7 +3,7 @@
     <string name="action_settings" translatable="false">Settings</string>
     <string name="button">перевести</string>
     <string name="json" translatable="false">owl</string>
-    <string name="fgdf" translatable="false">fd</string>
+    <string name="deleteMenuItem">удалить</string>
 
     <string name="switch_b">сменить</string>
     <string name="switch_tr">перевод</string>

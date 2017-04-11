@@ -10,6 +10,7 @@
     <string name="action_settings" translatable="false">Settings</string>
     <string name="enterText">Введите текст</string>
     <string name="json" translatable="false">owl</string>
+    <string name="deleteMenuItem">delete</string>
 
     <string name="switch_b">switch</string>
     <string name="switch_tr">translate</string>

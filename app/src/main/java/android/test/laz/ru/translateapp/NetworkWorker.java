@@ -156,8 +156,8 @@ public class NetworkWorker {
     }
 
 
-    public void translateString() {
-        translate(Prefs.getInstance().URL,Prefs.getInstance().TRANLSATE_URL, Prefs.getInstance().KEY,  TranslateActivity.fromText.getText().toString(), Prefs.getInstance().fromLang, Prefs.getInstance().toLang);
+    public void translateString(String translateTxt) {
+        translate(Prefs.getInstance().URL,Prefs.getInstance().TRANLSATE_URL, Prefs.getInstance().KEY,  translateTxt, Prefs.getInstance().fromLang, Prefs.getInstance().toLang);
     }
 
 

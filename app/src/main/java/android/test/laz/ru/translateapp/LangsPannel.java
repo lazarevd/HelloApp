@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.HashMap;
 
@@ -36,7 +37,9 @@ public class LangsPannel {
                 SpinnerItem si = (SpinnerItem) fromSpinner.getSelectedItem();
                 Prefs.getInstance().fromLang = si.getLangShortName();
                 Prefs.getInstance().rearrangeSpinnerArray(Prefs.getInstance().fromLang, SpinSelect.FROM); //перераспределяем элементы в спиннере, двигаем вверх выбранный
-                NetworkWorker.getInstance(context).translateString();
+                TranslateActivity ta = (TranslateActivity) context;
+                TextView fromTextView = (TextView) ta.findViewById(R.id.fromText);
+                NetworkWorker.getInstance(context).translateString(fromTextView.getText().toString());
                 Log.i("onItemSelected fromSpi ", si.getDisplayName() + " " + si.getLangShortName() + " pos: " + position);
             }
 
@@ -51,7 +54,9 @@ public class LangsPannel {
                 SpinnerItem si = (SpinnerItem) toSpinner.getSelectedItem();
                 Prefs.getInstance().toLang = si.getLangShortName();
                 Prefs.getInstance().rearrangeSpinnerArray(Prefs.getInstance().toLang, SpinSelect.TO);
-                NetworkWorker.getInstance(context).translateString();
+                TranslateActivity ta = (TranslateActivity) context;
+                TextView fromTextView = (TextView) ta.findViewById(R.id.fromText);
+                NetworkWorker.getInstance(context).translateString(fromTextView.getText().toString());
                 Log.i("onItemSelected toSpi", si.getDisplayName() + " " + si.getLangShortName() + " pos: " + position);
             }
             @Override

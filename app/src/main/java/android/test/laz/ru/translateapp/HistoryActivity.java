@@ -5,13 +5,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.test.laz.ru.db.DBContract;
 import android.test.laz.ru.db.DBWorker;
-import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,23 +37,21 @@ public class HistoryActivity extends AppCompatActivity {
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            System.out.println("VIEW " + view);
                  TextView fromTextView = (TextView) view.findViewById(R.id.histFromText);//не забываем указать view, а то на первом элементе свалится
-            System.out.println("TEXT VIEW " + fromTextView);
             String fromTxt = cursor.getString(1);
                     if (fromTxt.length() > 11) {
-                        fromTextView.setText(fromTxt.substring(0, 10));
+                        fromTextView.setText(fromTxt.substring(0, 10) + "...");
                     } else {
                             fromTextView.setText(fromTxt);
                         }
                         TextView toTextView = (TextView) view.findViewById(R.id.histToText);
                         String toTxt = cursor.getString(2);
                         if (toTxt.length() > 11) {
-                             toTextView.setText(toTxt.substring(0, 10));
+                             toTextView.setText(toTxt.substring(0, 10) + "...");
                          } else {
                             toTextView.setText(toTxt);
                         TextView dateText = (TextView) view.findViewById(R.id.histDate);
-                            dateText.setText(cursor.getString(3));
+                            dateText.setText(cursor.getString(3) + "...");
                     }
         }
     }
@@ -79,44 +78,45 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.history_layout);
         dbWorker = DBWorker.getInstance(this);
         histListView = (ListView) findViewById(R.id.historyList);//Список избранного
+
+        //при создании регистриуем контекстное меню.
+        //потом View - параметр этого метода передается в метод активити onCreateContextMenu(View view)
+        //это позволяет делать разные меню для разных вью
+
+        registerForContextMenu(histListView);
+
+
+
+        histListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("ITEM CLICK " + position + " " + id);
+                dbWorker.getHistoryById(id);
+            }
+
+        });
+
+
         Cursor histCursor = dbWorker.getHistoryItemsCursor();
         histCursorAdapter = new HistoryCursorAdapter(this, histCursor);
         histListView.setAdapter(histCursorAdapter);//Сразу выводим то, что в БД
-
-
-
-        Button delHistoryBtn = (Button) findViewById(R.id.delHist);
-        delHistoryBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("CLICK delete!!");
-                DBWorker dbWorker = DBWorker.getInstance(HistoryActivity.this);
-                dbWorker.delAllHistory();
-
-            }
-        });
-
-
-
-
-        Button printHistoryBtn = (Button) findViewById(R.id.printHist);
-        printHistoryBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("CLICK print!!");
-                dbWorker = DBWorker.getInstance(HistoryActivity.this);
-                Cursor histCursor = dbWorker.getHistoryItemsCursor();
-                histCursor.moveToFirst();
-                while (histCursor.moveToNext()) {
-                    String ret = "History ret " + histCursor.getString(histCursor.getColumnIndex(DBContract.HistoryEntry._ID)) + " " + histCursor.getString(histCursor.getColumnIndex(DBContract.HistoryEntry.FROM_TEXT)) + " " + histCursor.getString(histCursor.getColumnIndex(DBContract.HistoryEntry.TO_TEXT)) + " " + histCursor.getString(histCursor.getColumnIndex(DBContract.HistoryEntry.DATE));
-                    Log.i("History ret", ret);
-                }
-                refreshListView();
-            }
-        });
-
     }
 
+    //переопределяем контекстное меню для активити, вью на котором он вызвано передается как параметр
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+    {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        System.out.println("Create context " + v);
+        menu.add(Menu.NONE, 1, Menu.NONE, getResources().getString(R.string.deleteMenuItem));
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        long id = ((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).id;
+        System.out.println(id);
+        dbWorker.deleteHistoryById(id);
+        refreshListView();
+        return true;
+    }
 
 
     public void startFavorites(View view) {

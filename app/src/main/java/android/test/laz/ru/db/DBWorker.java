@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
-import android.test.laz.ru.translateapp.HistoryActivity;
 import android.test.laz.ru.translateapp.Prefs;
 import android.util.Log;
 
@@ -117,26 +116,10 @@ public class DBWorker extends SQLiteOpenHelper {
     public Cursor getHistoryItemsCursor() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor ret = db.rawQuery("SELECT * FROM " + DBContract.HistoryEntry.TABLE_NAME + " ORDER BY _id DESC", null);
-
         return ret;
     }
 
 
-
-    private class GetHistoryCursorTask extends AsyncTask<Void, Void, Cursor > {
-
-        @Override
-        protected Cursor doInBackground(Void... params) {
-            SQLiteDatabase db = getReadableDatabase();
-            Cursor ret = db.rawQuery("SELECT * FROM " + DBContract.HistoryEntry.TABLE_NAME + " ORDER BY _id DESC", null);
-            return ret;
-        }
-
-        protected void onPostExecute(Long result) {
-            HistoryActivity ha = (HistoryActivity) context;
-            ha.refreshListView();
-        }
-    }
 
     private class AddHistoryTask extends AsyncTask<String, Void, Void> {//запись в БД делаем в отдельном потоке
         protected Void doInBackground(String... putValues) {
@@ -154,6 +137,20 @@ public class DBWorker extends SQLiteOpenHelper {
     public void addHistory(String inputString, String toText) {
         System.out.println("EXEC addHistory" + inputString + " " + toText);
         new AddHistoryTask().execute(inputString, toText);//запускаем поток записи в БД
+    }
+
+    public void getHistoryById(long id) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DBContract.HistoryEntry.TABLE_NAME + " WHERE " + DBContract.HistoryEntry._ID + "=" + id, null);
+        cursor.moveToFirst();
+
+    }
+
+    public void deleteHistoryById(long id) {
+        SQLiteDatabase db = getWritableDatabase();
+        System.out.println("DELETING " + id);
+        db.execSQL("DELETE FROM " + DBContract.HistoryEntry.TABLE_NAME + " WHERE " + DBContract.HistoryEntry._ID + "=" + id);
+        db.close();
     }
 
 

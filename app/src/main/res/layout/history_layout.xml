@@ -5,18 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/delHist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="del" />
-
-    <Button
-        android:id="@+id/printHist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="print" />
-
     <ListView
         android:id= "@+id/historyList"
         android:layout_width="match_parent"
