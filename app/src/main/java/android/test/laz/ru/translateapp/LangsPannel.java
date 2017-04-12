@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -88,7 +88,7 @@ public class LangsPannel {
 
 
         //Кнопка смены языка
-        Button switchBtn = (Button) ((Activity) context).findViewById(R.id.switchBtn);
+        ImageButton switchBtn = (ImageButton) ((Activity) context).findViewById(R.id.switchBtn);
         switchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

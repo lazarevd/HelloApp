@@ -8,13 +8,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="64dp"
         android:orientation="horizontal"
         android:weightSum="1">
 
         <Spinner
             android:id="@+id/fromSpinner"
-            android:layout_width="50dp"
+            android:layout_width="64dp"
             android:layout_height="match_parent"
             android:layout_weight="0.50" />
 
@@ -23,24 +23,20 @@
             android:layout_height="match_parent"
             android:gravity="center">
 
-            <Button
+            <ImageButton
                 android:id="@+id/switchBtn"
-                android:layout_width="100dp"
+                android:layout_width="64dp"
                 android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/switch_b" />
+                android:background="@null"
+                android:src="@drawable/switch_button" />
         </LinearLayout>
 
         <Spinner
             android:id="@+id/toSpinner"
-            android:layout_width="50dp"
+            android:layout_width="64dp"
             android:layout_height="match_parent"
             android:layout_weight="0.50" />
     </LinearLayout>
-
 
 
     <LinearLayout
@@ -75,12 +71,13 @@
                 android:layout_weight="0.90"
                 >
 
-            <Button
-                android:id="@+id/addToFavBtn"
-                android:layout_height="32dp"
-                android:layout_width="32dp"
-                android:onClick="addToFavorites"
-                android:text="*" />
+                <ImageButton
+                    android:id="@+id/addToFavBtn"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@null"
+                    android:onClick="addToFavorites"
+                    android:src="@drawable/fav_button" />
             </LinearLayout>
 
         </LinearLayout>

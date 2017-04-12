@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -184,6 +185,8 @@ public void addToFavorites(View view) {
     DBWorker dbw = DBWorker.getInstance(TranslateActivity.this);
     String dir = Prefs.getInstance().fromLang + "-" + Prefs.getInstance().toLang;
     dbw.addFavorite(fromText.getText().toString(), toText.getText().toString(), dir);
+    Toast toast = Toast.makeText(this,R.string.toast_added_fav,Toast.LENGTH_SHORT);
+    toast.show();
 }
 
 public  void startHistory(View view) {

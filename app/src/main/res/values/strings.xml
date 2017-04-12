@@ -22,6 +22,8 @@
     <string name="switch_hs">history</string>
     <string name="switch_fv">favorites</string>
 
+    <string name="toast_added_fav">Added to favorites</string>
+
     <string name="ru">Russian</string>
     <string name="az">Azeri</string>
     <string name="sq">Albanian</string>
