@@ -72,9 +72,6 @@ public class DBWorker extends SQLiteOpenHelper {
             "DELETE FROM " + DBContract.FavoritesEntry.TABLE_NAME;
 
 
-    public void addFavorite(String inputString) {
-        new AddFavoriteTask().execute(inputString);//запускаем поток записи в БД
-    }
 
     private class AddFavoriteTask extends AsyncTask<String, Void, Void> {//запись в БД делаем в отдельном потоке
         protected Void doInBackground(String... putValues) {
@@ -82,6 +79,7 @@ public class DBWorker extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(DBContract.FavoritesEntry.FROM_TEXT, putValues[0]);
             values.put(DBContract.FavoritesEntry.TO_TEXT, putValues[1]);
+            values.put(DBContract.FavoritesEntry.DIR, putValues[2]);
             values.put(DBContract.FavoritesEntry.DATE, Prefs.getCurrentDateString());
             db.insert(DBContract.FavoritesEntry.TABLE_NAME, null, values);
             db.close();
@@ -89,9 +87,9 @@ public class DBWorker extends SQLiteOpenHelper {
         }
     }
 
-    public void addFavorite(String inputString, String toText) {
+    public void addFavorite(String inputString, String toText, String dir) {
         System.out.println("EXEC addFavorite" + inputString + " " + toText);
-        new AddFavoriteTask().execute(inputString, toText);//запускаем поток записи в БД
+        new AddFavoriteTask().execute(inputString, toText, dir);//запускаем поток записи в БД
     }
 
 
@@ -120,6 +118,7 @@ public class DBWorker extends SQLiteOpenHelper {
                 values.put(DBContract.HistoryEntry.TO_TEXT, putValues[1].substring(0, 10));
             } else {
                 values.put(DBContract.HistoryEntry.TO_TEXT, putValues[1]);}
+            values.put(DBContract.HistoryEntry.DIR, putValues[2]);
             values.put(DBContract.HistoryEntry.DATE, Prefs.getCurrentDateString());
             db.insert(DBContract.HistoryEntry.TABLE_NAME, null, values);
             db.close();
@@ -127,25 +126,29 @@ public class DBWorker extends SQLiteOpenHelper {
         }
     }
 
-    public void addHistory(String inputString, String toText) {
+    public void addHistory(String inputString, String toText, String dir) {
         System.out.println("EXEC addHistory" + inputString + " " + toText);
-        new AddHistoryTask().execute(inputString, toText);//запускаем поток записи в БД
+        new AddHistoryTask().execute(inputString, toText, dir);//запускаем поток записи в БД
     }
 
-    public String getHistoryFromTextById(long id) {
+    public String[] getHistoryFromTextById(long id) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + DBContract.HistoryEntry.TABLE_NAME + " WHERE " + DBContract.HistoryEntry._ID + "=" + id, null);
         cursor.moveToFirst();
-       return cursor.getString(cursor.getColumnIndexOrThrow(DBContract.HistoryEntry.FROM_TEXT));
+        String [] ret = new String[2];
+        ret[0] = cursor.getString(cursor.getColumnIndexOrThrow(DBContract.HistoryEntry.FROM_TEXT));
+        ret[1] = cursor.getString(cursor.getColumnIndexOrThrow(DBContract.HistoryEntry.DIR));
+        return ret;
     }
 
     public String[] getFavoritesFromTextById(long id) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + DBContract.FavoritesEntry.TABLE_NAME + " WHERE " + DBContract.FavoritesEntry._ID + "=" + id, null);
         cursor.moveToFirst();
-        String [] ret = new String[2];
+        String [] ret = new String[3];
         ret[0] = cursor.getString(cursor.getColumnIndexOrThrow(DBContract.FavoritesEntry.FROM_TEXT));
         ret[1] = cursor.getString(cursor.getColumnIndexOrThrow(DBContract.FavoritesEntry.TO_TEXT));
+        ret[2] = cursor.getString(cursor.getColumnIndexOrThrow(DBContract.FavoritesEntry.DIR));
         return ret;
     }
 

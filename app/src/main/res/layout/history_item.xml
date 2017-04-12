@@ -23,10 +23,23 @@
         android:layout_weight="0.50"
         android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        android:layout_weight="0.70">
     <TextView
         android:id="@+id/histDate"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.70"
+        android:layout_weight="0.50"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/histDir"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.50"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </LinearLayout>
 </LinearLayout>

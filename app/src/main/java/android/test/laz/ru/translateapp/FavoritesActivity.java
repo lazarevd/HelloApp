@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.test.laz.ru.db.DBContract;
 import android.test.laz.ru.db.DBWorker;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -41,21 +42,25 @@ public class FavoritesActivity extends AppCompatActivity {
         public void bindView(View view, Context context, Cursor cursor) {
             int cutWords = 20;
             TextView fromTextView = (TextView) view.findViewById(R.id.favFromText);
-            String fromTxt = cursor.getString(1);
+            String fromTxt = cursor.getString(cursor.getColumnIndex(DBContract.FavoritesEntry.FROM_TEXT));
             if (fromTxt.length() > cutWords) {
                 fromTextView.setText(fromTxt.substring(0, cutWords-1) + "...(" + fromTxt.length()+")");
             } else {
                 fromTextView.setText(fromTxt);
             }
             TextView toTextView = (TextView) view.findViewById(R.id.favToText);
-            String toTxt = cursor.getString(2);
+            String toTxt = cursor.getString(cursor.getColumnIndex(DBContract.FavoritesEntry.TO_TEXT));
             if (toTxt.length() > cutWords) {
                 toTextView.setText(toTxt.substring(0, cutWords-1) + "...");
             } else {
                 toTextView.setText(toTxt);
             }
             TextView dateTextView = (TextView) view.findViewById(R.id.favDate);
-            dateTextView.setText(cursor.getString(3));
+            dateTextView.setText(cursor.getString(cursor.getColumnIndex(DBContract.FavoritesEntry.DATE)));
+
+            TextView dirTextView = (TextView) view.findViewById(R.id.favDir);
+            dirTextView.setText(cursor.getString(cursor.getColumnIndex(DBContract.FavoritesEntry.DIR)));
+
         }
     }
 

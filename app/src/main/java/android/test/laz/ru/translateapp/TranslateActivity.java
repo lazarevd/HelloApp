@@ -88,7 +88,8 @@ public class TranslateActivity extends AppCompatActivity {
                 DBWorker dbw = DBWorker.getInstance(TranslateActivity.this);
                 if (!dbw.isInHistory(fromTxt))
                 {System.out.println("STARTING PRINT HISTORY");
-                    dbw.addHistory(fromTxt, toTxt);
+                    String dir = Prefs.getInstance().fromLang + "-" + Prefs.getInstance().toLang;
+                    dbw.addHistory(fromTxt, toTxt, dir);
                      }
             }
         };
@@ -125,13 +126,22 @@ public class TranslateActivity extends AppCompatActivity {
             if (extras != null) {
                 if (extras.containsKey("favorites_extra")) {
                     String[] intentString = intent.getStringArrayExtra("favorites_extra");
-                    if (intentString != null && intentString.length == 2) {
                         fromText.setText(intentString[0]);
                         toText.setText(intentString[1]);
-                    }
+                        Prefs.getInstance().setLangsFromString(intentString[2]);
+                    Prefs.getInstance().rearrangeSpinnerArray(Prefs.getInstance().fromLang, LangsPannel.SpinSelect.FROM);
+                    Prefs.getInstance().rearrangeSpinnerArray(Prefs.getInstance().toLang, LangsPannel.SpinSelect.TO);
+                    langsPannel.redrawSpinner(LangsPannel.SpinSelect.FROM);
+                    langsPannel.redrawSpinner(LangsPannel.SpinSelect.TO);
+
                 } else if (extras.containsKey("transfer_history")) {
-                    String intentString = intent.getStringExtra("transfer_history");
-                    fromText.setText(intentString);
+                    String[] intentString = intent.getStringArrayExtra("transfer_history");
+                    fromText.setText(intentString[0]);
+                    Prefs.getInstance().setLangsFromString(intentString[1]);
+                    Prefs.getInstance().rearrangeSpinnerArray(Prefs.getInstance().fromLang, LangsPannel.SpinSelect.FROM);
+                    Prefs.getInstance().rearrangeSpinnerArray(Prefs.getInstance().toLang, LangsPannel.SpinSelect.TO);
+                    langsPannel.redrawSpinner(LangsPannel.SpinSelect.FROM);
+                    langsPannel.redrawSpinner(LangsPannel.SpinSelect.TO);
                 }
             }
         }
@@ -172,7 +182,8 @@ public class TranslateActivity extends AppCompatActivity {
 
 public void addToFavorites(View view) {
     DBWorker dbw = DBWorker.getInstance(TranslateActivity.this);
-    dbw.addFavorite(fromText.getText().toString(), toText.getText().toString());
+    String dir = Prefs.getInstance().fromLang + "-" + Prefs.getInstance().toLang;
+    dbw.addFavorite(fromText.getText().toString(), toText.getText().toString(), dir);
 }
 
 public  void startHistory(View view) {

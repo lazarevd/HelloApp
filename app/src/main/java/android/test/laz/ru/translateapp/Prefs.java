@@ -28,8 +28,8 @@ public class Prefs {
     private final String SAVE_FILE_NAME = "prefsJSON.json";
     private ArrayList<SpinnerItem> fromSpinnerItems = new ArrayList<>();
     private ArrayList<SpinnerItem> toSpinnerItems = new ArrayList<>();
-    public static String fromLang = "en";
-    public static String toLang = "ru";
+    public  String fromLang = "en";
+    public  String toLang = "ru";
     public static final String URL = "https://translate.yandex.net/api/v1.5/tr.json";
     public static final String KEY = "?key=trnsl.1.1.20170315T111852Z.8e1ce17582bf567d.c36b8c3cf325da51fd6fa504d099559c62fa9102";
     public static final String TRANLSATE_URL = "/translate";
@@ -59,6 +59,16 @@ public class Prefs {
     }
 
 
+
+    public void setLangsFromString(String input) {
+
+        if (input != null && input.length() == 5) {
+            String[] getStr = input.split("-");
+            fromLang = getStr[0];
+            toLang = getStr[1];
+        }
+
+    }
 
 
     public synchronized void makeJSONfromPrefs() {

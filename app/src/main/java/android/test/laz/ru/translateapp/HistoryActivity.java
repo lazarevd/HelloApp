@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.test.laz.ru.db.DBContract;
 import android.test.laz.ru.db.DBWorker;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -38,20 +39,23 @@ public class HistoryActivity extends AppCompatActivity {
         public void bindView(View view, Context context, Cursor cursor) {
                  int cutWords = 20;
             TextView fromTextView = (TextView) view.findViewById(R.id.histFromText);//не забываем указать view, а то на первом элементе свалится
-            String fromTxt = cursor.getString(1);
+            String fromTxt = cursor.getString(cursor.getColumnIndex(DBContract.HistoryEntry.FROM_TEXT));
                     if (fromTxt.length() > cutWords) {
                         fromTextView.setText(fromTxt.substring(0, cutWords-1) + "...(" + fromTxt.length()+")");
                     } else {
                             fromTextView.setText(fromTxt);
                         }
                         TextView toTextView = (TextView) view.findViewById(R.id.histToText);
-                        String toTxt = cursor.getString(2);
+                        String toTxt = cursor.getString(cursor.getColumnIndex(DBContract.HistoryEntry.TO_TEXT));
                         if (toTxt.length() > cutWords) {
                              toTextView.setText(toTxt.substring(0, cutWords-1) + "...");
                          } else {
                             toTextView.setText(toTxt);
                         TextView dateText = (TextView) view.findViewById(R.id.histDate);
-                            dateText.setText(cursor.getString(3));
+                            dateText.setText(cursor.getString(cursor.getColumnIndex(DBContract.HistoryEntry.DATE)));
+
+                            TextView dirText = (TextView) view.findViewById(R.id.histDir);
+                            dirText.setText(cursor.getString(cursor.getColumnIndex(DBContract.HistoryEntry.DIR)));
                     }
         }
     }
@@ -129,7 +133,7 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
 
-    public void startTranslateAfterHistory(String fromText) {
+    public void startTranslateAfterHistory(String[] fromText) {
         Intent historyIntent = new Intent(this, TranslateActivity.class);
         historyIntent.putExtra("transfer_history", fromText);
         startActivity(historyIntent);
