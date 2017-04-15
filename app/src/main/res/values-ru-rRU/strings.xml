@@ -1,18 +1,118 @@
 <resources>
-    <string name="app_name" translatable="false">Я.Перевод</string>
-    <string name="action_settings" translatable="false">Settings</string>
-    <string name="button">перевести</string>
+
+    <string-array name="langs">
+        <item></item>
+
+    </string-array>
+
+
+    <string name="app_name">Я.Перевод</string>
+    <string name="translate_activity">Я.Перевод</string>
+    <string name="history_activity">История</string>
+    <string name="favorites_activity">Избранное</string>
+    <string name="delete_all_menu_item">удалить всё</string>
+
+    <string name="action_settings" translatable="false">Настройки</string>
+    <string name="enterText">Введите текст</string>
     <string name="json" translatable="false">owl</string>
-    <string name="deleteMenuItem">удалить</string>
+    <string name="deleteMenuItem">Удалить</string>
 
     <string name="switch_b">сменить</string>
     <string name="switch_tr">перевод</string>
     <string name="switch_hs">история</string>
     <string name="switch_fv">избранное</string>
 
-    <string name="ru">Русский</string>
+    <string name="toast_added_fav">Добавлено в избранное</string>
+
+
+    <string name="az">Азербайджанский</string>
+    <string name="sq">Албанский</string>
+    <string name="am">Амхарский</string>
     <string name="en">Английский</string>
+    <string name="ar">Арабский</string>
+    <string name="hy">Армянский</string>
+    <string name="af">Африкаанс</string>
+    <string name="eu">Баскский</string>
+    <string name="ba">Башкирсикий</string>
+    <string name="be">Белорусский</string>
+    <string name="bp">Бенгальский</string>
+    <string name="bg">Болгарский</string>
+    <string name="bs">Боснийский</string>
+    <string name="cy">Валлийский</string>
+    <string name="hu">Венгерский</string>
+    <string name="vi">Вьетнамский</string>
+    <string name="ht">Гаитянский(Креольский)</string>
+    <string name="gl">Галисийский</string>
+    <string name="nl">Голландский</string>
+    <string name="mrj">Горномарийский</string>
+    <string name="el">Греческий</string>
+    <string name="ka">Грузинский</string>
+    <string name="gu">Гуджарати</string>
+    <string name="da">Датский</string>
+    <string name="he">Иврит</string>
+    <string name="yi">Идиш</string>
+    <string name="id">Индонезийский</string>
+    <string name="ga">Ирландсикй</string>
+    <string name="it">Итальянский</string>
+    <string name="is">Исландский</string>
+    <string name="es">Испанский</string>
+    <string name="kk">Казахский</string>
+    <string name="kn">Каннада</string>
+    <string name="ca">Каталанский</string>
+    <string name="ky">Киргизский</string>
     <string name="fr">Французский</string>
+    <string name="ko">Корейский</string>
+    <string name="xh">Коса</string>
+    <string name="la">Латынь</string>
+    <string name="lv">Латышский</string>
+    <string name="lt">Литовский</string>
+    <string name="lb">Люксембургский</string>
+    <string name="mg">Малагасийский</string>
+    <string name="ms">Малайский</string>
+    <string name="ml">Малаялам</string>
+    <string name="mt">Мальтийский</string>
+    <string name="mk">Македонский</string>
+    <string name="mi">Маори</string>
+    <string name="mr">Маратхи</string>
+    <string name="mhr">Марийский</string>
+    <string name="mn">Монгольский</string>
     <string name="de">Немецкий</string>
+    <string name="ne">Непальский</string>
+    <string name="no">Норвежский</string>
+    <string name="pa">Панджаби</string>
+    <string name="pap">Папьяменто</string>
+    <string name="fa">Персидский</string>
+    <string name="pl">Польский</string>
+    <string name="pt">Португальский</string>
+    <string name="ro">Румынский</string>
+    <string name="ru">Русский</string>
+    <string name="ceb">Себуанский</string>
+    <string name="sr">Сербский</string>
+    <string name="si">Сингальский</string>
+    <string name="sk">Словацкий</string>
+    <string name="sl">Словенский</string>
+    <string name="sw">Суахили</string>
+    <string name="su">Сунданский</string>
+    <string name="tg">Таджикский</string>
+    <string name="th">Тайский</string>
+    <string name="tl">Тагальский</string>
+    <string name="ta">Тамильский</string>
+    <string name="tt">Татарский</string>
+    <string name="te">Телугу</string>
+    <string name="tr">Турецкий</string>
+    <string name="udm">Удмуртский</string>
+    <string name="uz">Узбекский</string>
+    <string name="uk">Украинский</string>
+    <string name="ur">Урду</string>
+    <string name="fi">Финский</string>
+    <string name="zh">Китайский</string>
     <string name="hi">Хинди</string>
+    <string name="hr">Хорватский</string>
+    <string name="cs">Чешский</string>
+    <string name="sv">Шведский</string>
+    <string name="gd">Шотландский</string>
+    <string name="et">Эстонский</string>
+    <string name="eo">Эсперанто</string>
+    <string name="jv">Яванский</string>
+    <string name="ja">Японский</string>
 </resources>

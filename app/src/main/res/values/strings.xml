@@ -13,7 +13,7 @@
     <string name="delete_all_menu_item">delete all</string>
 
     <string name="action_settings" translatable="false">Settings</string>
-    <string name="enterText">Введите текст</string>
+    <string name="enterText">Enter text</string>
     <string name="json" translatable="false">owl</string>
     <string name="deleteMenuItem">delete</string>
 
@@ -24,7 +24,7 @@
 
     <string name="toast_added_fav">Added to favorites</string>
 
-    <string name="ru">Russian</string>
+
     <string name="az">Azeri</string>
     <string name="sq">Albanian</string>
     <string name="am">Amharic</string>
@@ -56,9 +56,63 @@
     <string name="it">Italian</string>
     <string name="is">Icelandic</string>
     <string name="es">Spanish</string>
-
-
+    <string name="kk">Kazakh</string>
+    <string name="kn">Kannada</string>
+    <string name="ca">Catalan</string>
+    <string name="ky">Kyrgyz</string>
     <string name="fr">French</string>
+    <string name="ko">Korean</string>
+    <string name="xh">Xhosa</string>
+    <string name="la">Latin</string>
+    <string name="lv">Latvian</string>
+    <string name="lt">Lithuanian</string>
+    <string name="lb">Luxembourgish</string>
+    <string name="mg">Malagasy</string>
+    <string name="ms">Malay</string>
+    <string name="ml">Malayalm</string>
+    <string name="mt">Maitese</string>
+    <string name="mk">Macedonian</string>
+    <string name="mi">Maori</string>
+    <string name="mr">Marathi</string>
+    <string name="mhr">Mari</string>
+    <string name="mn">Mongolian</string>
     <string name="de">German</string>
+    <string name="ne">Nepali</string>
+    <string name="no">Norwegian</string>
+    <string name="pa">Punjabi</string>
+    <string name="pap">Papiamento</string>
+    <string name="fa">Persian</string>
+    <string name="pl">Polish</string>
+    <string name="pt">Portuguese</string>
+    <string name="ro">Romanian</string>
+    <string name="ru">Russian</string>
+    <string name="ceb">Cebuano</string>
+    <string name="sr">Serbian</string>
+    <string name="si">Sinhala</string>
+    <string name="sk">Slovak</string>
+    <string name="sl">Slovenian</string>
+    <string name="sw">Swahili</string>
+    <string name="su">Sundanese</string>
+    <string name="tg">Tajik</string>
+    <string name="th">Thai</string>
+    <string name="tl">Tagalog</string>
+    <string name="ta">Tamil</string>
+    <string name="tt">Tatar</string>
+    <string name="te">Telugu</string>
+    <string name="tr">Turkish</string>
+    <string name="udm">Udmurt</string>
+    <string name="uz">Uzbek</string>
+    <string name="uk">Ukrainian</string>
+    <string name="ur">Urdu</string>
+    <string name="fi">Finnish</string>
+    <string name="zh">Chinese</string>
     <string name="hi">Hindi</string>
+    <string name="hr">Croatian</string>
+    <string name="cs">Czech</string>
+    <string name="sv">Swedish</string>
+    <string name="gd">Scottish</string>
+    <string name="et">Estonian</string>
+    <string name="eo">Esperanto</string>
+    <string name="jv">Javanese</string>
+    <string name="ja">Japanese</string>
 </resources>
