@@ -1,6 +1,9 @@
-package android.test.laz.ru.translateapp;
+package android.test.laz.ru.network;
 
 import android.content.Context;
+import android.test.laz.ru.translateapp.LangsPannel;
+import android.test.laz.ru.translateapp.Prefs;
+import android.test.laz.ru.translateapp.TranslateActivity;
 import android.util.Log;
 
 import com.android.volley.Cache;
@@ -37,7 +40,7 @@ public class NetworkWorker {
     private class CacheRequest extends Request<NetworkResponse> {
 
         /*Класс, расширяющий базовый класс Request библиотеки Volley с целью в ручную
-        контролировать время кэширования запроса т.к. по умолчанию ожидается, что эти данные отдаст сервер
+        контролировать время кэширования запроса т.к. по умолчанию ожидается, что данные для кэширования отдаст сервер
          */
         private final Response.Listener<NetworkResponse> mListener;
         private final Response.ErrorListener mErrorListener;
@@ -48,15 +51,14 @@ public class NetworkWorker {
             this.mErrorListener = errorListener;
         }
 
-
-        @Override
+        @Override//переопределяем метод обработки ответа от сервера, вручную указываем как и сколько времени хранить кэш
         protected Response<NetworkResponse> parseNetworkResponse(NetworkResponse response) {
             Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
             if (cacheEntry == null) {
                 cacheEntry = new Cache.Entry();
             }
-            final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
-            final long cacheExpired = 72 * 60 * 60 * 1000; // in 72 hours this cache entry expires completely
+            final long cacheHitButRefreshed = 60 * 60 * 1000; // кэш до его обновления используем час
+            final long cacheExpired = 72 * 60 * 60 * 1000; // ..а через 72 часа он истекает полностью и больше не может быть использован
             long now = System.currentTimeMillis();
             final long softExpire = now + cacheHitButRefreshed;
             final long ttl = now + cacheExpired;
@@ -122,7 +124,8 @@ public class NetworkWorker {
 
     public void getLangs(String... params) {
         String url = params[0] + params[1] + params[2];
-        StringRequest sReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {//Запрашиваем языковые пары
+        StringRequest sReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            //Запрашиваем языковые пары
             @Override
             public void onResponse(String response) {
                 System.out.println("RESP " + response);
@@ -148,11 +151,64 @@ public class NetworkWorker {
                 }
             }
         }, new Response.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
             }
         });
-        rQueue.add(sReq);
+        rQueue.add(sReq);//запускаем реквест
+    }
+
+
+    public void detectLanguage(String detectString) {
+        detectLang(Prefs.getInstance().URL, Prefs.getInstance().DETECT_URL, Prefs.getInstance().KEY, detectString);
+    }
+
+    public void detectLang(String... args) {
+
+
+        String url = null;
+        try {
+            url = args[0] + args[1] + args[2] + "&text="+ URLEncoder.encode(args[3], "utf-8") + "&hint=ru,en,fr,de";//скорее всего это русский или английский
+        } catch (UnsupportedEncodingException e) {
+            url = args[0] + args[1] + args[2] + "&text="+ args[2] + "&hint=ru,en";
+        }
+        System.out.println("DETECTOR URL " + url);
+        StringRequest detectReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                String resLang;
+                JSONObject resJsonObj;
+                System.out.println("DETECT RESPONSE " + response);
+                try {
+                    resJsonObj = new JSONObject(response);
+                    System.out.println("DETECT JSON " + resJsonObj);
+                    resLang = resJsonObj.getString("lang");
+                    System.out.println("Detected " + resLang + " " + response);
+                    if (resLang != null && resLang.length()> 1) {
+                        TranslateActivity ta = (TranslateActivity) context;
+
+                        if(resLang.equals(Prefs.getInstance().toLang))
+                        {Prefs.getInstance().switchLangs();
+                            ta.langsPannel.redrawSpinner(LangsPannel.SpinSelect.FROM);
+                            ta.langsPannel.redrawSpinner(LangsPannel.SpinSelect.TO);}
+                        else {
+                        Prefs.getInstance().fromLang = resLang;
+                            Prefs.getInstance().rearrangeSpinnerArray(resLang, LangsPannel.SpinSelect.FROM);
+                        ta.langsPannel.redrawSpinner(LangsPannel.SpinSelect.FROM);}
+                        }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {//всегда надо переопределять в аргументах листнера
+            }
+        });
+   rQueue.add(detectReq);//запускаем реквест
+
+
     }
 
 
@@ -171,8 +227,6 @@ public class NetworkWorker {
         }
         Prefs.getInstance().lastTranslateString = params[3];//Припомним текст последнего запроса на случай восстановления приклада из паузы
 
-
-
         Log.i("URL ", url);
 
         CacheRequest sReq = new CacheRequest(0, url, new Response.Listener<NetworkResponse>() {
@@ -182,8 +236,7 @@ public class NetworkWorker {
                 JSONObject resJsonObj = null;
                 String resultText = "";
                 try {
-                    final String jsonString = new String(response.data,
-                            HttpHeaderParser.parseCharset(response.headers));
+                    final String jsonString = new String(response.data,HttpHeaderParser.parseCharset(response.headers));
                     resJsonObj = new JSONObject(jsonString);
 
                 } catch (JSONException e) {

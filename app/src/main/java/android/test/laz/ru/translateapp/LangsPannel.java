@@ -2,6 +2,7 @@ package android.test.laz.ru.translateapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.test.laz.ru.network.NetworkWorker;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +19,10 @@ import java.util.HashMap;
  */
 
 public class LangsPannel {
+
+    /*
+    Чтобы сильно не захламлять основную активити, языковую панель сделаем в отдельном классе
+     */
     private HashMap<String, Spinner> langSpinners = new HashMap<>();
     private Spinner fromSpinner;
     private Spinner toSpinner;
@@ -69,6 +74,7 @@ public class LangsPannel {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     redrawSpinner(SpinSelect.FROM);//тут применяем к спиннеру перераспределенные элементы, т.е. список формируется в момент клика по нему, иначе проваливаемся в бесконечный цикл
+                    Prefs.getInstance().setPauseForAutodetect();//ставим паузу на автоопределение
                 }
                 return false;
             }
@@ -95,6 +101,7 @@ public class LangsPannel {
                 Prefs.getInstance().switchLangs();
                 redrawSpinner(SpinSelect.FROM);
                 redrawSpinner(SpinSelect.TO);
+                Prefs.getInstance().setPauseForAutodetect();//принудительно поменяли язык, потому автодетект отключаем
             }
         });
     }

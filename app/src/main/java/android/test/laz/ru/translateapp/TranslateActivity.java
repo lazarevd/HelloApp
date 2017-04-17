@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.test.laz.ru.db.DBWorker;
+import android.test.laz.ru.network.NetworkWorker;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -24,7 +25,6 @@ public class TranslateActivity extends AppCompatActivity {
     public static TextView fromText;
     public static TextView toText;
     public LangsPannel langsPannel;
-    private int SAVE_HISTORY_TIMEOUT = 3000;
     private Prefs prefs;
 
     @Override
@@ -77,7 +77,7 @@ public class TranslateActivity extends AppCompatActivity {
             }
         });
 
-        /*Сохранять запись в историю будем по событию смены текста в пле ввода и
+        /*Сохранять запись в историю будем по событию смены текста в поле ввода и
         * после ожидания в пару секунд, чтобы не плодить туда записи. Для тайм-аута  используем Хендлер*/
         final Handler saveToHistoryHandler = new Handler();
         final Runnable saveToHistoryRunnable = new Runnable() {
@@ -94,6 +94,10 @@ public class TranslateActivity extends AppCompatActivity {
                      }
             }
         };
+
+
+
+
 
 
         fromText.addTextChangedListener(new TextWatcher() {
@@ -113,11 +117,20 @@ public class TranslateActivity extends AppCompatActivity {
                 if (fromTxt != null && fromTxt.length() > 0) {
                     NetworkWorker.getInstance(TranslateActivity.this).translateString(fromTxt);
                 }
-                saveToHistoryHandler.removeCallbacksAndMessages(null);//Всякий раз как текст меняется, очищаем очередь в хендлере
-                //System.out.println("MATCH \n\n\n " + m.find() + ", Text: " + s.toString() +".");
+                //сохраняем в историю, после того как текст не менялся некторое время
+                //если текст именился, обнуляем очередь заданий в хендлере и закидывем новое с текущим текстом
+                saveToHistoryHandler.removeCallbacksAndMessages(null);
+                //после того как язык сменили вручную, ждем некоторое время и не применяем автоопределение
                 if (fromTxt != null && fromTxt.length() > 1 && !fromTxt.equals(getResources().getString(R.string.enterText))) {//Проверяем, что слова написаны целиком (в конце пробел) и после этого сохраняем их
-                    saveToHistoryHandler.postDelayed(saveToHistoryRunnable, SAVE_HISTORY_TIMEOUT);//запускаем таймер, если за это время текст не изменится, сохраним его в историю
+                    saveToHistoryHandler.postDelayed(saveToHistoryRunnable, Prefs.getInstance().SAVE_HISTORY_TIMEOUT);//запускаем таймер, если за это время текст не изменится, сохраним его в историю
+
+
+                    System.out.println("ALLOW " + Prefs.getInstance().allowAutoswitch + " " + Prefs.getInstance().isSwitchOnAuto());
+                    if (Prefs.getInstance().allowAutoswitch && Prefs.getInstance().isSwitchOnAuto()) {//если настройкаи разрешено, то делаем автодетект
+                        NetworkWorker.getInstance(TranslateActivity.this).detectLanguage(fromTxt);
+                    }
                 }
+
             }
         });
 
@@ -170,8 +183,6 @@ public class TranslateActivity extends AppCompatActivity {
         }
     }
 
-
-
     @Override
     protected void onStop() {
     super.onStop();
@@ -188,6 +199,7 @@ public void addToFavorites(View view) {
     Toast toast = Toast.makeText(this,R.string.toast_added_fav,Toast.LENGTH_SHORT);
     toast.show();
 }
+
 
 public  void startHistory(View view) {
     Intent historyIntent = new Intent(this, HistoryActivity.class);

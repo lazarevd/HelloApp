@@ -2,6 +2,8 @@ package android.test.laz.ru.translateapp;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Handler;
+import android.test.laz.ru.network.NetworkWorker;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -23,6 +25,12 @@ import java.util.HashSet;
 public class Prefs {
 
     private transient static Prefs instance;
+    public transient static boolean switchOnAuto = true;//каждый раз сбрасывается при выходе из приложения
+    private transient Handler activateAutoDetect;
+    private transient Runnable activateAutoRunnable;
+
+
+
     private  HashMap<String,String> langDisplayNames = new HashMap<>();
     private  ArrayList<String[]> langPairsList = new ArrayList<>();
     private final String SAVE_FILE_NAME = "prefsJSON.json";
@@ -34,8 +42,17 @@ public class Prefs {
     public static final String KEY = "?key=trnsl.1.1.20170315T111852Z.8e1ce17582bf567d.c36b8c3cf325da51fd6fa504d099559c62fa9102";
     public static final String TRANLSATE_URL = "/translate";
     public static final String GETLANGS_URL = "/getLangs";
+    public static final String DETECT_URL = "/detect";
     public static String lastTranslateString = "";
+    public static int SWITCH_ON_AUTO_TIMEOUT = 10000;
+    public static int SAVE_HISTORY_TIMEOUT = 3000;
     private static Context context = null;
+    //настройки приложения
+    public static boolean allowAutoswitch = true; //настройка
+
+
+
+
 
     private Prefs() {
     }
@@ -110,7 +127,6 @@ public class Prefs {
     public void switchLangs() {
         rearrangeSpinnerArray(toLang, LangsPannel.SpinSelect.FROM);
         rearrangeSpinnerArray(fromLang, LangsPannel.SpinSelect.TO);
-
     }
 
     public void rearrangeSpinnerArray(String inpLang, LangsPannel.SpinSelect spinSel) {
@@ -213,6 +229,30 @@ public class Prefs {
 
 
 
+    public synchronized void setPauseForAutodetect () {//пауза дял автоопределени языка
+        System.out.println("SETTING PAUSE");
+        Prefs.getInstance().setSwitchOnAuto(false);
+        activateAutoDetect = new Handler();
+        activateAutoRunnable = new Runnable() {
+            @Override
+            public void run() {
+                setSwitchOnAuto(true);
+                System.out.println("switched auto " + true);
+            }
+        };
+        System.out.println("activateAutoDetect " + activateAutoDetect + " " + "activateAutoRunnable" + activateAutoRunnable);
+            activateAutoDetect.removeCallbacksAndMessages(null);
+            activateAutoDetect.postDelayed(activateAutoRunnable, SWITCH_ON_AUTO_TIMEOUT);
+    }
+
+
+    public synchronized static boolean isSwitchOnAuto() {
+        return switchOnAuto;
+    }
+
+    public synchronized static void setSwitchOnAuto(boolean switchOnAuto) {
+        Prefs.switchOnAuto = switchOnAuto;
+    }
 
 
 }
