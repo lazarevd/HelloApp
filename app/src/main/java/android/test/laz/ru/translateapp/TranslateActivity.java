@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -123,9 +124,6 @@ public class TranslateActivity extends AppCompatActivity {
                 //после того как язык сменили вручную, ждем некоторое время и не применяем автоопределение
                 if (fromTxt != null && fromTxt.length() > 1 && !fromTxt.equals(getResources().getString(R.string.enterText))) {//Проверяем, что слова написаны целиком (в конце пробел) и после этого сохраняем их
                     saveToHistoryHandler.postDelayed(saveToHistoryRunnable, Prefs.getInstance().SAVE_HISTORY_TIMEOUT);//запускаем таймер, если за это время текст не изменится, сохраним его в историю
-
-
-                    System.out.println("ALLOW " + Prefs.getInstance().allowAutoswitch + " " + Prefs.getInstance().isSwitchOnAuto());
                     if (Prefs.getInstance().allowAutoswitch && Prefs.getInstance().isSwitchOnAuto()) {//если настройкаи разрешено, то делаем автодетект
                         NetworkWorker.getInstance(TranslateActivity.this).detectLanguage(fromTxt);
                     }
@@ -200,6 +198,10 @@ public void addToFavorites(View view) {
     toast.show();
 }
 
+public  void startSettings(MenuItem item) {
+        Intent settindsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(settindsIntent);
+    }
 
 public  void startHistory(View view) {
     Intent historyIntent = new Intent(this, HistoryActivity.class);

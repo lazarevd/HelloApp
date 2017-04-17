@@ -22,6 +22,8 @@
     <string name="switch_hs">история</string>
     <string name="switch_fv">избранное</string>
 
+    <string name="settings_autotranslate_item">Определять язык</string>
+
     <string name="toast_added_fav">Добавлено в избранное</string>
 
 
