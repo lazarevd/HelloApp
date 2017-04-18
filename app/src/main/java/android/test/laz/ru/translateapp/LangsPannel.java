@@ -72,6 +72,17 @@ public class LangsPannel {
         fromSpinner.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+
+                Prefs prefs = Prefs.getInstance();
+                if(prefs.getFromSpinnerItems().size() < 1 || prefs.getToSpinnerItems().size() < 1) {
+
+
+                    NetworkWorker.getInstance(context).getLangs(prefs.URL, prefs.GETLANGS_URL, prefs.KEY);
+                    prefs.generateSpinnerArray(LangsPannel.SpinSelect.FROM);
+                    prefs.generateSpinnerArray(LangsPannel.SpinSelect.TO);
+                }
+
+
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     redrawSpinner(SpinSelect.FROM);//тут применяем к спиннеру перераспределенные элементы, т.е. список формируется в момент клика по нему, иначе проваливаемся в бесконечный цикл
                     Prefs.getInstance().setPauseForAutodetect();//ставим паузу на автоопределение

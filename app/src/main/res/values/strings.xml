@@ -16,6 +16,8 @@
     <string name="enterText">Enter text</string>
     <string name="json" translatable="false">owl</string>
     <string name="deleteMenuItem">delete</string>
+    <string name="noConnectionMessage">PLEASE, CONNECT TO INTERNET AND RESTART APPLICATION!</string>
+    <string name="noConnectionMessage_tr">PLEASE, CONNECT TO INTERNET</string>
 
     <string name="switch_b">switch</string>
     <string name="switch_tr">translate</string>

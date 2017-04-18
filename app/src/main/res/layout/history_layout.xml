@@ -15,32 +15,61 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/button_tr"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.33"
-            android:text="@string/switch_tr"
-            android:onClick="startTranslate"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_weight="0.33">
 
-        <Button
-            android:id="@+id/button_hs"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.33"
-            android:onClick="startHistory"
-            android:text="@string/switch_hs"
-            android:enabled="false"/>
+            <ImageButton
+                android:id="@+id/button_tr"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@null"
+                android:onClick="startTranslate"
+                android:src="@drawable/translate_selector"
+                android:text="@string/switch_tr" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_weight="0.33">
+            <ImageButton
+                android:id="@+id/button_hs"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:enabled="false"
+                android:background="@null"
+                android:src="@drawable/history_selector"
+                android:text="@string/switch_hs" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_weight="0.33">
 
-        <Button
-            android:id="@+id/button_fv"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.33"
-            android:text="@string/switch_fv"
-            android:onClick="startFavorites"/>
+            <ImageButton
+                android:id="@+id/button_fv"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:onClick="startFavorites"
+                android:background="@null"
+                android:src="@drawable/favorites_selector"
+                android:text="@string/switch_fv" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
 </LinearLayout>

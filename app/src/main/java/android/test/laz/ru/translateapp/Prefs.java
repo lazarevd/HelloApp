@@ -167,10 +167,18 @@ public class Prefs {
             //Заполняем сеты для спиннеров из массива языковых пар.
             for(String[] st : langPairsList) {
                 siSet.add(st[0]);
+                //Азиатские языки при запросе сервиса getLangs почему-то не выводятся, добавим их в ручнную, ведь они есть в описании и перевод то работает
+                siSet.add("zh");
+                siSet.add("ja");
+                siSet.add("ko");
+
             }
         } else {
             for(String[] st : langPairsList) {
                 siSet.add(st[1]);
+                siSet.add("zh");
+                siSet.add("ja");
+                siSet.add("ko");
             }
         }
         for(String st : siSet) {//для каждого сокращенного имени создаем объект, содержащий и полное имя на локальном языке

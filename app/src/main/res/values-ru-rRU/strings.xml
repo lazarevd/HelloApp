@@ -16,6 +16,8 @@
     <string name="enterText">Введите текст</string>
     <string name="json" translatable="false">owl</string>
     <string name="deleteMenuItem">Удалить</string>
+    <string name="noConnectionMessage">ПОДКЛЮЧИТЕСЬ, ПОЖАЛУЙСТА, К ИНТЕРНЕТУ И ПЕРЕЗАПУСТИТЕ ПРИЛОЖЕНИЕ!</string>
+    <string name="noConnectionMessage_tr">ПОДКЛЮЧИТЕСЬ, ПОЖАЛУЙСТА, К ИНТЕРНЕТУ</string>
 
     <string name="switch_b">сменить</string>
     <string name="switch_tr">перевод</string>

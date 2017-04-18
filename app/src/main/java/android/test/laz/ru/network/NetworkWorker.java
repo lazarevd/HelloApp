@@ -3,8 +3,10 @@ package android.test.laz.ru.network;
 import android.content.Context;
 import android.test.laz.ru.translateapp.LangsPannel;
 import android.test.laz.ru.translateapp.Prefs;
+import android.test.laz.ru.translateapp.R;
 import android.test.laz.ru.translateapp.TranslateActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Cache;
 import com.android.volley.NetworkResponse;
@@ -124,11 +126,12 @@ public class NetworkWorker {
 
     public void getLangs(String... params) {
         String url = params[0] + params[1] + params[2];
+        System.out.println("TRY getLangs" + url);
         StringRequest sReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             //Запрашиваем языковые пары
             @Override
             public void onResponse(String response) {
-                System.out.println("RESP " + response);
+                System.out.println("RESP getLangs" + response);
                 JSONObject resJsonObj;
                 ArrayList<String[]> arrList = new ArrayList<>();
                 try {
@@ -154,6 +157,11 @@ public class NetworkWorker {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context,"Internet!",Toast.LENGTH_LONG);
+                TranslateActivity ta = (TranslateActivity) context;
+                ta.toText.setText(R.string.noConnectionMessage);
+                ta.fromText.setText(R.string.noConnectionMessage);
+                System.out.println("NO RESPONSE!!!");
             }
         });
         rQueue.add(sReq);//запускаем реквест
@@ -263,7 +271,6 @@ public class NetworkWorker {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
             }
         });
         rQueue.add(sReq);
