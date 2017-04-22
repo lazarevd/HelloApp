@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -99,6 +100,9 @@ public class FavoritesActivity extends AppCompatActivity {
         Cursor favCursor = dbWorker.getFavoriteItemsCursor();
         favCursorAdapter = new FavoritesCursorAdapter(this, favCursor);
         favListView.setAdapter(favCursorAdapter);//Сразу выводим то, что в БД
+
+        ImageButton favButton = (ImageButton) findViewById(R.id.button_fv);
+        favButton.setEnabled(false);//Обязательно тут задизейблить, инчае не подтянет картинку селектора
     }
 
     public void onDeleteAllFavorites(MenuItem item) {

@@ -10,9 +10,8 @@ import android.test.laz.ru.network.NetworkWorker;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,12 +26,7 @@ public class TranslateActivity extends AppCompatActivity {
     public static TextView toText;
     public LangsPannel langsPannel;
     private Prefs prefs;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_translate, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+    
 
 
 
@@ -161,6 +155,10 @@ public class TranslateActivity extends AppCompatActivity {
         toText = (TextView) findViewById(R.id.toText);//Определяем поле перевода
         toText.setKeyListener(null);
 
+
+        ImageButton translateButton = (ImageButton) findViewById(R.id.button_tr);
+        translateButton.setEnabled(false);//Обязательно тут задизейблить, инчае не подтянет картинку селектора
+
     }
 
 
@@ -198,10 +196,6 @@ public void addToFavorites(View view) {
     toast.show();
 }
 
-public  void startSettings(MenuItem item) {
-        Intent settindsIntent = new Intent(this, SettingsActivity.class);
-        startActivity(settindsIntent);
-    }
 
 public  void startHistory(View view) {
     Intent historyIntent = new Intent(this, HistoryActivity.class);

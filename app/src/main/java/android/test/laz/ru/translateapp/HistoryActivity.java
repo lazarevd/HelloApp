@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -115,6 +116,10 @@ public class HistoryActivity extends AppCompatActivity {
         Cursor histCursor = dbWorker.getHistoryItemsCursor();
         histCursorAdapter = new HistoryCursorAdapter(this, histCursor);
         histListView.setAdapter(histCursorAdapter);//Сразу выводим то, что в БД
+
+        ImageButton historyButton = (ImageButton) findViewById(R.id.button_hs);
+        historyButton.setEnabled(false);//Обязательно тут задизейблить, инчае не подтянет картинку селектора
+
     }
 
     //переопределяем контекстное меню для активити, вью на котором он вызвано передается как параметр
