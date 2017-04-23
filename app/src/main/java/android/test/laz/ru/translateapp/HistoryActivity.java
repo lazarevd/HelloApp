@@ -1,10 +1,10 @@
 package android.test.laz.ru.translateapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.test.laz.ru.db.DBContract;
 import android.test.laz.ru.db.DBWorker;
 import android.view.ContextMenu;
@@ -19,7 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class HistoryActivity extends AppCompatActivity {
+public class HistoryActivity extends Activity {
 
     private DBWorker dbWorker;
     HistoryCursorAdapter histCursorAdapter;

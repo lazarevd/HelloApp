@@ -1,10 +1,10 @@
 package android.test.laz.ru.translateapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.http.HttpResponseCache;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.test.laz.ru.db.DBWorker;
 import android.test.laz.ru.network.NetworkWorker;
 import android.text.Editable;
@@ -19,7 +19,7 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class TranslateActivity extends AppCompatActivity {
+public class TranslateActivity extends Activity {
 
     public static String LOG_TAG = "my_log";
     public static TextView fromText;
@@ -194,6 +194,12 @@ public void addToFavorites(View view) {
     dbw.addFavorite(fromText.getText().toString(), toText.getText().toString(), dir);
     Toast toast = Toast.makeText(this,R.string.toast_added_fav,Toast.LENGTH_SHORT);
     toast.show();
+}
+
+
+public void clearInput(View view) {
+    TextView fromText = (TextView) findViewById(R.id.fromText);
+    fromText.setText("");
 }
 
 

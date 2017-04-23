@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.50"
+        android:textColor="#1C75BC"
         android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
@@ -34,6 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.50"
+        android:textSize="10dp"
+        android:textColor="#1C75BC"
         android:textAppearance="?android:attr/textAppearanceSmall" />
         <TextView
             android:id="@+id/histDir"

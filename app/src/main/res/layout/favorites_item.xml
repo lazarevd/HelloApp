@@ -20,6 +20,7 @@
             android:id="@+id/favToText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="#1C75BC"
             android:layout_weight="0.50"
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
@@ -29,12 +30,15 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="vertical"
-        android:layout_weight="0.70">
+        android:layout_weight="0.70"
+        android:gravity="right">
     <TextView
         android:id="@+id/favDate"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.50"
+        android:textSize="10dp"
+        android:textColor="#1C75BC"
         android:textAppearance="?android:attr/textAppearanceSmall" />
         <TextView
             android:id="@+id/favDir"
